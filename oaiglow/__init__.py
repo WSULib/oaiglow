@@ -3,6 +3,9 @@
 # modules / packages import
 from flask import Flask, render_template, g
 
+# peewee
+import peewee
+
 # http://flask.pocoo.org/snippets/35/
 class ReverseProxied(object):
 	'''Wrap the application in this middleware and configure the 
@@ -40,6 +43,9 @@ class ReverseProxied(object):
 oaiglow_app = Flask(__name__)
 oaiglow_app.wsgi_app = ReverseProxied(oaiglow_app.wsgi_app)
 oaiglow_app.debug = True
+
+# peewee ORM
+db = peewee.SqliteDatabase('oaiglow.db')
 
 # get handlers
 import oaiglow.views

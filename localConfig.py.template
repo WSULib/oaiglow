@@ -1,4 +1,16 @@
 # config for oaiglow
 
+# oaiglow app
 OAIGLOW_APP_PORT = 4800
 OAIGLOW_APP_PREFIX = 'oaiglow'
+
+# OAI server
+OAI_SERVER_NAME = 'foobar'
+OAI_SERVER_BASE_URL = 'http://foor.bar/oai/'
+OAI_SET = 'dpla'
+OAI_METADATA_PREFIX = 'MODS'
+
+# DEBUG / EXAMPLES
+TEST_IDENTIFIERS = [
+	'oai:long_identifier_here'
+]
