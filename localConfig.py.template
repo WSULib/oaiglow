@@ -1,0 +1,4 @@
+# config for oaiglow
+
+OAIGLOW_APP_PORT = 4800
+OAIGLOW_APP_PREFIX = 'oaiglow'
