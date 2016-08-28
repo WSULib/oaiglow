@@ -4,10 +4,13 @@
 import localConfig
 
 # peewee ORM
-from peewee import *
+import peewee
 
 # Sickle
 from sickle import Sickle
+
+# oaiglow
+from oaiglow import db
 
 class Server(object):
 
@@ -30,6 +33,30 @@ class Server(object):
 		'''
 		sickle_record = self.sickle.GetRecord(identifier=identifier, metadataPrefix=metadataPrefix)
 		return Record(identifier, sickle_record)
+
+
+# class Identifier(object):
+
+# 	'''
+# 	Wrapper for identifier response
+# 	'''
+
+# 	def __init__(self, sickle_identifier):
+# 		self.sickle = sickle_identifier
+
+
+class Identifier(peewee.Model):
+
+	datestamp = peewee.DateField()
+	deleted = peewee.BooleanField()
+	identifier = peewee.CharField()
+	raw= peewee.CharField()
+	setSpecs = peewee.CharField()
+	xml = None
+
+	class Meta:
+		database = db
+
 
 
 class Record(object):

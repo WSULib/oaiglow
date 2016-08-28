@@ -90,3 +90,4 @@ ENV/
 
 # oaiglow
 localConfig.py
+*.db
