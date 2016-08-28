@@ -14,4 +14,4 @@ import localConfig
 @oaiglow_app.route("/%s" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def index():	
 
-	return "Hello oaiglow world."
+	return render_template("index.html", localConfig=localConfig)

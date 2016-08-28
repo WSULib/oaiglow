@@ -1,0 +1,12 @@
+body {
+	margin-top:25px;
+}
+
+.container {
+	max-width:2048px;
+	width:90%;
+}
+
+.main_nav li {
+	display:inline;
+}
