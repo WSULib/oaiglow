@@ -28,5 +28,22 @@ if __name__ == '__main__':
 	logging.debug("starting oaiglow app at :%d, /%s..." % (localConfig.OAIGLOW_APP_PORT, localConfig.OAIGLOW_APP_PREFIX))
 	reactor.listenTCP( localConfig.OAIGLOW_APP_PORT, oaiglow_site )
 
+	logging.debug('''
+	    _------_
+	  -~        ~-
+	 -     _      -
+	-      |>      -
+	-      |<      -
+	 -     |>     -
+	  -    ||    -
+	   -   ||   -
+	    -__||__-
+	    |______|
+	    <______>
+	    <______>
+	       \/
+	''')
+
 	logging.debug('oaiglow started')
+
 	reactor.run()

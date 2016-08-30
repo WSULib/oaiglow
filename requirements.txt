@@ -1,4 +1,5 @@
 flask
+ipython
 peewee
 sickle
 twisted
