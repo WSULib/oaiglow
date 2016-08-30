@@ -12,10 +12,11 @@ from sickle import Sickle
 # oaiglow
 from oaiglow import db
 
+
 class Server(object):
 
 	'''
-	wrapper for sickle OAI-PMH serer interface
+	app wrapper for sickle OAI-PMH serer interface
 	'''
 	
 	def __init__(self):
@@ -32,20 +33,14 @@ class Server(object):
 		todo: add try / except block here
 		'''
 		sickle_record = self.sickle.GetRecord(identifier=identifier, metadataPrefix=metadataPrefix)
-		return Record(identifier, sickle_record)
-
-
-# class Identifier(object):
-
-# 	'''
-# 	Wrapper for identifier response
-# 	'''
-
-# 	def __init__(self, sickle_identifier):
-# 		self.sickle = sickle_identifier
+		return Record.create(identifier, sickle_record)
 
 
 class Identifier(peewee.Model):
+
+	'''
+	ORM wrapper for Sickle Identifier
+	'''
 
 	datestamp = peewee.DateField()
 	deleted = peewee.BooleanField()
@@ -57,25 +52,61 @@ class Identifier(peewee.Model):
 	class Meta:
 		database = db
 
+	@classmethod
+	def create(cls, sickle_identifier_record):
+		return cls(
+			datestamp=sickle_identifier_record.datestamp,
+			deleted=sickle_identifier_record.deleted,
+			identifier=sickle_identifier_record.identifier,
+			raw=sickle_identifier_record.raw,
+			setSpecs=sickle_identifier_record.setSpecs,xml=sickle_identifier_record.xml
+		)
 
 
-class Record(object):
+class Record(peewee.Model):
 	
 	'''
-	wrapper for Sickle Record
+	ORM wrapper for Sickle Record
 	'''
 
-	def __init__(self, identifier, sickle_record):
-		self.identifier = identifier
-		self.sickle = sickle_record
+	# DB fields
+	identifier = peewee.CharField()
+	title = peewee.CharField()
+	thumbnail_url = peewee.CharField()
 
-		# read XML, derive common values
-		self.metadata = self.sickle.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata')
-		self.title = self.sickle.metadata['title'][0]
-		self.thumbnail_url = self.metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
+	# not stored in DB
+	# xml etree element
+	metadata = None
 
-	def __repr__(self):
-		return "<dplamp.oai.Record: %s / %s>" % (self.title, self.identifier)
+	# sickle API
+	sickle = None
 
-	def __str__(self):
-		return "<dplamp.oai.Record: %s / %s>" % (self.title, self.identifier)
+	class Meta:
+		database = db
+
+	@classmethod
+	def create(cls, identifier, sickle_record):
+		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata')
+		title = sickle_record.metadata['title'][0]
+		thumbnail_url = metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
+		return cls(
+			identifier=identifier,
+			title=title,
+			thumbnail_url=thumbnail_url,
+			metadata=metadata,
+			sickle=sickle_record
+		)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

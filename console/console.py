@@ -27,10 +27,10 @@ def tableWipe():
 
 # test store and retrieve identifier
 def testIdentifier():
-	test_ident = identifiers.next()
+	sickle_test_ident = identifiers.next()
 	logging.debug('storing identifier...')
-	ident_row = Identifier(datestamp=test_ident.datestamp, deleted=test_ident.deleted, identifier=test_ident.identifier, raw=test_ident.raw, setSpecs=test_ident.setSpecs, xml=test_ident.xml)
+	ident_row = Identifier.create(sickle_test_ident)
 	ident_row.save()
 	logging.debug('retrieving identifier...')
-	logging.debug( Identifier.select().where(Identifier.identifier == test_ident.identifier).get() )
+	logging.debug( Identifier.select().where(Identifier.identifier == sickle_test_ident.identifier).get() )
 
