@@ -29,20 +29,19 @@ if __name__ == '__main__':
 	reactor.listenTCP( localConfig.OAIGLOW_APP_PORT, oaiglow_site )
 
 	logging.debug('''
-	    _------_
-	  -~        ~-
-	 -     _      -
-	-      |>      -
-	-      |<      -
-	 -     |>     -
-	  -    ||    -
-	   -   ||   -
-	    -__||__-
-	    |______|
-	    <______>
-	    <______>
-	       \/
-	''')
+    _------_
+  -~        ~-
+ -     _      -
+-      |>      -
+-      |<      -
+ -     |>     -
+  -    ||    -
+   -   ||   -
+    -__||__-
+    |______|
+    <______>
+    <______>
+       \/''')
 
 	logging.debug('oaiglow started')
 

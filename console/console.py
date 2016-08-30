@@ -8,6 +8,21 @@ from oaiglow.models import Server, Identifier, Record
 from oaiglow import db
 db.connect()
 
+logging.debug('''
+    _------_
+  -~        ~-
+ -     _      -
+-      |>      -
+-      |<      -
+ -     |>     -
+  -    ||    -
+   -   ||   -
+    -__||__-
+    |______|
+    <______>
+    <______>
+       \/''')
+
 # fire sickle server instance
 logging.debug('firing server instance...')
 server = Server()
@@ -22,7 +37,9 @@ cfai_example = test_records[0]
 
 # DB
 def tableWipe():
+	logging.debug('dropping tables...')
 	db.drop_table(Identifier)
+	logging.debug('creating tables...')
 	db.create_tables([Identifier])
 
 # test store and retrieve identifier
