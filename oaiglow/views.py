@@ -59,6 +59,19 @@ def harvest_all():
 	return render_template("harvest_status.html", localConfig=localConfig, harvest_count=len(ogs))
 
 
+# wipe all records
+@oaiglow_app.route("/%s/harvest/wipe/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/%s/harvest/wipe" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def wipe():
+
+	# DEBUG - using static records
+	from console import console
+	console.tableWipe()
+
+	return redirect("/%s/harvest/" % (localConfig.OAIGLOW_APP_PREFIX))
+
+
+
 ####################
 # VIEW
 ####################
