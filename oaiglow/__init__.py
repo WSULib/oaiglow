@@ -1,5 +1,9 @@
 #oaiglow flask app
 
+# generic
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 # modules / packages import
 from flask import Flask, render_template, g
 
