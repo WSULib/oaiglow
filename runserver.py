@@ -13,10 +13,9 @@ from oaiglow import oaiglow_app
 
 # localConfig
 import localConfig
+from localConfig import logging
 
 # general imports
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 # WSUDOR_API_app
 oaiglow_resource = WSGIResource(reactor, reactor.getThreadPool(), oaiglow_app)
@@ -25,10 +24,10 @@ oaiglow_site = Site(oaiglow_resource)
 if __name__ == '__main__':
 
 	# main oaiglow app
-	logging.debug("starting oaiglow app at :%d, /%s..." % (localConfig.OAIGLOW_APP_PORT, localConfig.OAIGLOW_APP_PREFIX))
+	logging.info("starting oaiglow app at :%d, /%s..." % (localConfig.OAIGLOW_APP_PORT, localConfig.OAIGLOW_APP_PREFIX))
 	reactor.listenTCP( localConfig.OAIGLOW_APP_PORT, oaiglow_site )
 
-	logging.debug('''
+	logging.info('''
     _------_
   -~        ~-
  -     _      -
@@ -43,6 +42,6 @@ if __name__ == '__main__':
     <______>
        \/''')
 
-	logging.debug('oaiglow started')
+	logging.info('oaiglow started')
 
 	reactor.run()

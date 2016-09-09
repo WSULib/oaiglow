@@ -1,13 +1,15 @@
 # oaiglow console
 
 # generic
-import logging
 from lxml import etree
-logging.basicConfig(level=logging.DEBUG)
 import re
+import time
+
 
 # oaiglow
 import localConfig
+from localConfig import logging
+
 from oaiglow.models import Server, Identifier, Record
 from oaiglow import db
 db.connect()
@@ -37,7 +39,8 @@ tableWipe() - wipe and recreate tables
 testIdentifier() = return test identifier
 staticRecords() = returns parsed static records
 staticSickleRecords([list_of_records]) = returns list of Sickle records from raw OAI server XML records, i.e. results of staticRecords() (shorthand: `sickle_records = staticSickleRecords(staticRecords())` )
-staticOGRecords() = returns initiated 
+staticOGRecords() = returns oaiglow records
+insertAll(insert_type=['atomic','insert_many'] = inserts all static OG records, iterating or insert_many, both with `db.atomic()`
 ''')
 
 server = False
@@ -84,8 +87,24 @@ def staticRecords():
 		records = re.findall(r'(<record.+?</record>)', fhand.read())
 		return [ etree.fromstring(record) for record in records ]
 
+
 def staticSickleRecords(records=staticRecords()):
 	return [ sickle.models.Record(record) for record in records ]
 
+
 def staticOGRecords(sickle_records=staticSickleRecords()):
 	return [ Record.create(sickle_record) for sickle_record in sickle_records ]
+
+
+def insertAll(og_records=staticOGRecords()):
+
+	# atomic
+	'''
+	If debug printing is off, this is plenty fast enough:
+		~ 2300 records = 1.1 seconds
+	'''
+	stime = time.time()
+	with db.atomic():
+		for og in og_records:
+			og.save()
+	logging.info("total time for insert: %s" % (float(time.time()) - float(stime)))
