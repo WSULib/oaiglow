@@ -19,6 +19,7 @@ a:hover {
 }
 
 body {
+	line-height: 1;
 	margin-top:25px;
 }
 
@@ -29,4 +30,9 @@ body {
 
 .main_nav li {
 	display:inline;
+}
+
+.spacer_pipe {
+	margin-left:5px;
+	margin-right:5px;
 }
