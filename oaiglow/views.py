@@ -93,3 +93,9 @@ def view_all():
 	all_records = list(Record.select())
 
 	return render_template("view_all.html", localConfig=localConfig, all_records=all_records)
+
+
+####################
+# REPORTS
+####################
+
