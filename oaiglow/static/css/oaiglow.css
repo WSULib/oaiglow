@@ -1,3 +1,23 @@
+a {
+	color:gray;
+}
+
+a:hover {
+	color:black;
+}
+
+.app_title {
+	font-weight: bold;
+    background-color: rgba(255, 249, 58, 0.28);
+    padding: 10px;
+    border-radius: 20px;
+    color:black;
+    text-decoration: none;
+}
+.app_title:hover {
+	color:gray;
+}
+
 body {
 	margin-top:25px;
 }

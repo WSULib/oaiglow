@@ -12,6 +12,9 @@ from sickle import Sickle
 # oaiglow
 from oaiglow import db
 
+# generic
+from lxml import etree
+
 
 class Server(object):
 
@@ -70,9 +73,23 @@ class Record(peewee.Model):
 	'''
 
 	# DB fields
+	# full record
+	raw = peewee.CharField()
+
+	# header
 	identifier = peewee.CharField()
+	datestamp = peewee.DateField()
+	setSpec = peewee.CharField()
+
+	# metadata (payload and derived)
+	metadata_as_string = peewee.CharField()
 	title = peewee.CharField()
 	thumbnail_url = peewee.CharField()
+
+	# about
+	'''
+	Skipping about section from REPOX for now, looks to be showing provenance of original record?
+	'''
 
 	# not stored in DB
 	# xml etree element
@@ -85,12 +102,30 @@ class Record(peewee.Model):
 		database = db
 
 	@classmethod
-	def create(cls, identifier, sickle_record):
+	def create(cls, sickle_record):
+		
+		#raw
+		raw = sickle_record.raw
+
+		# header
+		header = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}header')
+		identifier = header.find('{http://www.openarchives.org/OAI/2.0/}identifier').text
+		datestamp = header.find('{http://www.openarchives.org/OAI/2.0/}datestamp').text
+		setSpec = header.find('{http://www.openarchives.org/OAI/2.0/}setSpec').text
+
+		#metadata
 		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata')
+		metadata_as_string = etree.tostring(metadata)
 		title = sickle_record.metadata['title'][0]
 		thumbnail_url = metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
+
+		# return Record Instance
 		return cls(
+			raw=raw,
 			identifier=identifier,
+			datestamp=datestamp,
+			setSpec=setSpec,
+			metadata_as_string=metadata_as_string,
 			title=title,
 			thumbnail_url=thumbnail_url,
 			metadata=metadata,
