@@ -60,7 +60,7 @@ def harvest_all():
 			og_record.save()
 		logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
-	return render_template("harvest.html", localConfig=localConfig, harvest_count=total_count)
+	return render_template("harvest.html", localConfig=localConfig, app_msg="%s records harvested, total time elapsed %s seconds" % (total_count, (float(time.time()) - stime)))
 
 
 # wipe all records
@@ -79,7 +79,7 @@ def wipe():
 	db.create_tables([Identifier,Record])
 	logging.info("tableWipe complete.")
 
-	return redirect("/%s/harvest/" % (localConfig.OAIGLOW_APP_PREFIX))
+	return render_template("harvest.html", localConfig=localConfig, app_msg="tables wiped and created")
 
 
 
