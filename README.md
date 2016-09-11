@@ -1,5 +1,14 @@
 # oaiglow
+
+## Overview
 Utility to harvest and visualize OAI-PMH feeds, with a specific focus on the [DPLA](http://dp.la).
+
+General approach is:
+* harvest records from OAI-PMH server, store in database
+* provide API access to sets and single records, with funtionality such as:
+ * XSLT transformations
+ * DPLA single record preview
+ * schematron validation
 
 ## Installation
 * Create python3, virtual environment:

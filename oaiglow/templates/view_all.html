@@ -10,7 +10,8 @@
 	<div class="twelve columns">
 		<ul>
 			{% for record in all_records %}
-			<li>{{record.title}}</li>
+			<!-- thumbnail, <img src="{{record.thumbnail_url}}"/> -->
+			<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/"> {{record.title}}</a></li>
 			{% endfor %}
 		</ul>
 	</div>

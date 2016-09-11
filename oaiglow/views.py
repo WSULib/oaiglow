@@ -4,12 +4,14 @@
 from flask import render_template, request, session, redirect, make_response, Response
 
 # oaiglow flask app
-from oaiglow import oaiglow_app, db, logging
+from oaiglow import db, logging, oaiglow_app, server
 from oaiglow.models import Server, Identifier, Record
 
 # localConfig
 import localConfig
 
+# generic
+import time
 
 ####################
 # HOME
@@ -47,16 +49,18 @@ def harvest_all():
 
 	logging.debug("preparing to harvest all records")
 
-	# DEBUG - using static records
-	from console import console
-	# grab statics
-	ogs = console.staticOGRecords()
-	# ingest statics
-	with db.atomic():
-		for og in ogs:
-			og.save()
+	# retrieve records to harvest and store in DB
+	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
+	total_count = records.resumption_token.complete_list_size
 
-	return render_template("harvest_status.html", localConfig=localConfig, harvest_count=len(ogs))
+	with db.atomic():
+		stime = time.time()
+		for record in records:
+			og_record = Record.create(record)
+			og_record.save()
+		logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
+
+	return render_template("harvest.html", localConfig=localConfig, harvest_count=total_count)
 
 
 # wipe all records
@@ -64,9 +68,16 @@ def harvest_all():
 @oaiglow_app.route("/%s/harvest/wipe" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def wipe():
 
-	# DEBUG - using static records
-	from console import console
-	console.tableWipe()
+	# dropping and creating tables
+	logging.info('dropping tables...')
+	for table in [Identifier,Record]:
+		try:
+			db.drop_table(table)
+		except:
+			logging.info('could not drop table, %s' % table)
+	logging.info('creating tables...')
+	db.create_tables([Identifier,Record])
+	logging.info("tableWipe complete.")
 
 	return redirect("/%s/harvest/" % (localConfig.OAIGLOW_APP_PREFIX))
 
@@ -93,6 +104,21 @@ def view_all():
 	all_records = list(Record.select())
 
 	return render_template("view_all.html", localConfig=localConfig, all_records=all_records)
+
+
+####################
+# RECORD
+####################
+
+# view all records
+@oaiglow_app.route("/%s/record/<identifier>/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/%s/record/<identifier>" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def single_record(identifier):
+
+	# retrieve single record from OAI server
+	record = server.get_record(identifier)
+
+	return render_template("record_single.html",localConfig=localConfig, record=record)
 
 
 ####################

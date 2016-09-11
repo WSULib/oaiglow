@@ -22,10 +22,10 @@ class Server(object):
 	app wrapper for sickle OAI-PMH serer interface
 	'''
 	
-	def __init__(self):
-		self.base_url = localConfig.OAI_SERVER_BASE_URL
-		self.default_set = localConfig.OAI_SET
-		self.default_metadata_prefix = localConfig.OAI_METADATA_PREFIX
+	def __init__(self, base_url=localConfig.OAI_SERVER_BASE_URL, default_set=localConfig.OAI_SET, default_metadata_prefix=localConfig.OAI_METADATA_PREFIX):
+		self.base_url = base_url
+		self.default_set = default_set
+		self.default_metadata_prefix = default_metadata_prefix
 
 		# init sickle interface
 		self.sickle = Sickle(self.base_url)
@@ -36,7 +36,7 @@ class Server(object):
 		todo: add try / except block here
 		'''
 		sickle_record = self.sickle.GetRecord(identifier=identifier, metadataPrefix=metadataPrefix)
-		return Record.create(identifier, sickle_record)
+		return Record.create(sickle_record)
 
 
 class Identifier(peewee.Model):

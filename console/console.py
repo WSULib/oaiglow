@@ -60,6 +60,8 @@ def testLiveServer():
 	test_records = [ server.get_record(ident) for ident in localConfig.TEST_IDENTIFIERS ]
 	cfai_example = test_records[0]
 
+	return [server,identifiers,test_records,cfai_example]
+
 # DB
 def tableWipe():
 	logging.debug('dropping tables...')

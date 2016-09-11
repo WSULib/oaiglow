@@ -1,15 +1,19 @@
 # todo
 
+* database
+ * when starting app, confirm database connection is valid
+
 * build out harvesting of records
  * static files are indexing well, focus on iterating over sickle results
  * poll background job?
   * celery?  anything more lightweight?
  * sockets?
 
-* add datatables for viewing harvested records
+* global viewing
+ * add datatables for viewing harvested records
+ * give clear, obvious total counts
 
 * single item page
- * overview of metadata, thumbnail, etc.
  * DPLA preview?
  * schematron validation?
 
