@@ -1,16 +1,29 @@
 # config for oaiglow
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
 # oaiglow app
 OAIGLOW_APP_PORT = 4800
 OAIGLOW_APP_PREFIX = 'oaiglow'
 
 # OAI server
-OAI_SERVER_NAME = 'foobar'
-OAI_SERVER_BASE_URL = 'http://foor.bar/oai/'
+OAI_SERVER_NAME = 'handy_name'
+OAI_SERVER_BASE_URL = 'http://example.com/OAIHandler'
 OAI_SET = 'dpla'
 OAI_METADATA_PREFIX = 'MODS'
 
 # DEBUG / EXAMPLES
-TEST_IDENTIFIERS = [
-	'oai:long_identifier_here'
-]
+TEST_IDENTIFIERS = []
+
+# database
+
+# sqlite
+# DB_TYPE = 'sqlite'
+# DB_SQLITE_NAME = 'oaiglow.db'
+
+# mysql
+DB_TYPE = 'mysql'
+DB_MYSQL_USERNAME = 'oaiglow'
+DB_MYSQL_PASSWORD = 'oaiglow'
+DB_MYSQL_DATABASE = 'oaiglow'
