@@ -75,9 +75,9 @@ def _db_close(exc):
 	if not db.is_closed():
 		db.close()
 
-# Server handle
 from oaiglow.models import Server
 server = Server()
 
 # get handlers
 import oaiglow.views
+

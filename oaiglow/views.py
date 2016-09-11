@@ -1,11 +1,11 @@
 # views for oaiglow
 
 # flask proper
-from flask import render_template, request, session, redirect, make_response, Response
+from flask import render_template, request, session, redirect, make_response, Response, jsonify
 
 # oaiglow flask app
 from oaiglow import db, logging, oaiglow_app, server
-from oaiglow.models import Server, Identifier, Record
+from oaiglow.models import Identifier, Record
 
 # localConfig
 import localConfig
@@ -18,7 +18,6 @@ import time
 ####################
 
 # home index
-@oaiglow_app.route("/%s/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def index():	
 
@@ -30,7 +29,6 @@ def index():
 ####################
 
 # harvest home
-@oaiglow_app.route("/%s/harvest/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/harvest" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def harvest():
 
@@ -38,7 +36,6 @@ def harvest():
 
 
 # harvest all records
-@oaiglow_app.route("/%s/harvest/all/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/harvest/all" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def harvest_all():
 
@@ -64,7 +61,6 @@ def harvest_all():
 
 
 # wipe all records
-@oaiglow_app.route("/%s/harvest/wipe/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/harvest/wipe" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def wipe():
 
@@ -88,7 +84,6 @@ def wipe():
 ####################
 
 # view home
-@oaiglow_app.route("/%s/view/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/view" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def view():
 
@@ -96,7 +91,6 @@ def view():
 
 
 # view all records
-@oaiglow_app.route("/%s/view/all/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/view/all" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def view_all():
 
@@ -107,18 +101,71 @@ def view_all():
 
 
 ####################
-# RECORD
+# RECORD (SR)
 ####################
 
 # view all records
-@oaiglow_app.route("/%s/record/<identifier>/" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 @oaiglow_app.route("/%s/record/<identifier>" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
-def single_record(identifier):
+def sr(identifier):
 
-	# retrieve single record from OAI server
-	record = server.get_record(identifier)
+	# retrieve single record from database
+	record = Record.get(identifier)
 
-	return render_template("record_single.html",localConfig=localConfig, record=record)
+	if record:
+		return render_template("record_single.html",localConfig=localConfig, record=record)
+	else:
+		return render_template("record_single.html",localConfig=localConfig, app_msg="Could not retrieve record from database.")
+
+
+# update record
+@oaiglow_app.route("/%s/record/<identifier>/update" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def sr_update(identifier):
+
+	# retrieve single record from database
+	record = Record.get(identifier)
+
+	if record:
+
+		# update record from OAI-PMH server
+		record.update()	
+
+		return render_template("record_single.html",localConfig=localConfig, record=record, app_msg="Record updated!")
+
+	else:
+		return render_template("record_single.html",localConfig=localConfig, app_msg="Could not retrieve record from database.")
+
+
+@oaiglow_app.route("/%s/record/<identifier>/raw" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def sr_raw(identifier):
+
+	# retrieve single record from database
+	record = Record.get(identifier)
+
+	if record:
+
+		return Response(record.raw, mimetype='text/xml')
+
+	else:
+
+		return jsonify({"status":"no dice"})
+
+
+@oaiglow_app.route("/%s/record/<identifier>/metadata" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def sr_metadata(identifier):
+
+	# retrieve single record from database
+	record = Record.get(identifier)
+
+	if record:
+
+		return Response(record.metadata_as_string, mimetype='text/xml')
+
+	else:
+
+		return jsonify({"status":"no dice"})
+
+
+
 
 
 ####################

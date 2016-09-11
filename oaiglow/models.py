@@ -10,12 +10,13 @@ import peewee
 from sickle import Sickle
 
 # oaiglow
-from oaiglow import db
+from oaiglow import db, logging
 
 # generic
 from lxml import etree
 
 
+# OAI-PMH server
 class Server(object):
 
 	'''
@@ -74,7 +75,7 @@ class Record(peewee.Model):
 
 	# DB fields
 	# full record
-	raw = peewee.CharField()
+	raw = peewee.TextField()
 
 	# header
 	identifier = peewee.CharField()
@@ -82,8 +83,8 @@ class Record(peewee.Model):
 	setSpec = peewee.CharField()
 
 	# metadata (payload and derived)
-	metadata_as_string = peewee.CharField()
-	title = peewee.CharField()
+	metadata_as_string = peewee.TextField()
+	title = peewee.TextField()
 	thumbnail_url = peewee.CharField()
 
 	# about
@@ -98,8 +99,22 @@ class Record(peewee.Model):
 	# sickle API
 	sickle = None
 
+	# OAI-PMH server
+	server = Server()
+
 	class Meta:
 		database = db
+
+
+	@classmethod
+	def get(cls, identifier):
+		logging.debug('getting db record')
+		query = cls.select().where(Record.identifier==identifier).execute()		
+		try:
+			return query.next()
+		except StopIteration:
+			return False
+
 
 	@classmethod
 	def create(cls, sickle_record):
@@ -114,7 +129,7 @@ class Record(peewee.Model):
 		setSpec = header.find('{http://www.openarchives.org/OAI/2.0/}setSpec').text
 
 		#metadata
-		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata')
+		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata').getchildren()[0]
 		metadata_as_string = etree.tostring(metadata)
 		title = sickle_record.metadata['title'][0]
 		thumbnail_url = metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
@@ -131,6 +146,32 @@ class Record(peewee.Model):
 			metadata=metadata,
 			sickle=sickle_record
 		)
+
+
+	# update record from OAI-PMH server
+	def update(self):
+
+		logging.info("updating record: %s" % self.identifier)
+
+		# delete db instance
+		logging.debug("deleteing db instance")
+		self.delete_instance()
+
+		# create from new
+		logging.debug("retrieving record from OAI-PMH server")
+		self = self.server.get_record(self.identifier)
+
+		# save to db 
+		logging.debug('saving new instance to db')
+		self.save()
+
+
+
+
+
+
+
+
 
 
 

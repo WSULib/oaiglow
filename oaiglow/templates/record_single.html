@@ -6,33 +6,43 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="six columns">
-		<table class="u-full-width">
-			<tbody>
-				<tr>
-					<td><strong>Title</strong></td>
-					<td>{{record.title}}</td>
-				</tr>
-				<tr>
-					<td><strong>Identifier</strong></td>
-					<td>{{record.identifier}}</td>
-				</tr>
-				<tr>
-					<td><strong>Thumbnail</strong></td>
-					<td><img src="{{record.thumbnail_url}}"/></td>
-				</tr>
-				<tr>
-					<td><strong>Actions</strong></td>
-					<td>
-						<a href="">Schematron Validation</a><br>
-						<a href="">DPLA view</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+{% if record %}
+	<div class="row">
+		<div class="six columns">
+			<table class="u-full-width">
+				<tbody>
+					<tr>
+						<td><strong>Title</strong></td>
+						<td>{{record.title}}</td>
+					</tr>
+					<tr>
+						<td><strong>Identifier</strong></td>
+						<td>{{record.identifier}}</td>
+					</tr>
+					<tr>
+						<td><strong>Thumbnail</strong></td>
+						<td><img src="{{record.thumbnail_url}}"/></td>
+					</tr>
+					<tr>
+						<td><strong>API</strong></td>
+						<td>
+							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/raw">full record (XML)</a><br>
+							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/metadata">metadata (XML)</a>
+						</td>
+					</tr>
+					<tr>
+						<td><strong>Actions</strong></td>
+						<td>
+							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br>
+							<a href="">Schematron Validation</a><br>
+							<a href="">DPLA view</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
+{% endif %}
 
 {% include 'footer.html' %}
 

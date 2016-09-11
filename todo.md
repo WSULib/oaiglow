@@ -21,3 +21,9 @@
  * consider moving reusable functions from `console` to `utilities.py` file?
  * organizing as static methods for class?
   * e.g. `tableWipe()` for the `Server` class, etc.
+
+* content-type negotiation for single record API routes?
+
+* rollbacks
+ * harvesting
+ * single record updates
