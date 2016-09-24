@@ -100,6 +100,66 @@ def view_all():
 	return render_template("view_all.html", localConfig=localConfig, all_records=all_records)
 
 
+#####################
+# Datatables Endpoint
+#####################
+
+# return json for job
+@oaiglow_app.route('/%s/view/all/datatables_json' % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def datatables_json():
+
+	'''
+	Expecting JSON request from DataTables here.
+	Parse request, craft peewee query, return json.
+	Easy right?
+
+	docs: https://datatables.net/manual/server-side	
+
+	Will look something like this:
+	{
+	  "args": {
+		"draw": 1,
+		"columns": [
+		  {
+			"data": "data0",
+			"searchable": true,
+			"orderable": true,
+			"search": {
+			  "value": "",
+			  "regex": false
+			}
+		  },
+		  {
+			"data": "data1",
+			"searchable": true,
+			"orderable": true,
+			"search": {
+			  "value": "",
+			  "regex": false
+			}
+		  },
+		],
+		"order": [],
+		"start": 0,
+		"length": 100,
+		"search": {
+		  "value": "",
+		  "regex": false
+		}
+	  }
+	}
+
+	Docs for creating query:
+	http://docs.peewee-orm.com/en/latest/peewee/querying.html
+	'''
+
+	print(request.args)
+
+	return jsonify({'msg':'fake data'})
+
+
+
+
 ####################
 # RECORD (SR)
 ####################
