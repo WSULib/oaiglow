@@ -30,6 +30,8 @@
 	    "processing": true,
 	    "serverSide": true,
 	    "ajax": {
+	    	contentType: "application/json",
+    		type: "POST",
     		url: "/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all/datatables_json",
 		    "data": function ( d ) {
 		      return JSON.stringify( d );

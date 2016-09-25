@@ -15,6 +15,8 @@ import localConfig
 
 # generic
 import time
+import json
+import urllib
 
 ####################
 # HOME
@@ -163,10 +165,10 @@ def datatables_json():
 	]	
 
 	# instantiating a DataTable for the query and table needed
-	pdt = PeeweeDT(columns, Record, request.args)
+	pdt = PeeweeDT(columns, Record, request.json)
 
 	# returns what is needed by DataTable
-	return jsonify(pdt.DToutput.__dict__)
+	return jsonify(pdt.DToutput)
 
 
 
