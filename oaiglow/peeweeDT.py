@@ -46,6 +46,7 @@ class PeeweeDT(object):
 
 		# dictionary INPUT DataTables ajax
 		self.DTinput = DTinput
+		logging.debug(self.DTinput)
 
 		# placeholder for query to build
 		self.query = False
@@ -62,7 +63,9 @@ class PeeweeDT(object):
 	def filter(self):
 		logging.debug('applying filters...')
 		# e.g.
-		# self.query = self.query.where(self.peewee_model.title == '1899 Packard number one')
+		search_string = self.DTinput['search']['value']
+		if search_string != '':
+			self.query = self.query.where(self.peewee_model.title.contains(search_string))
 
 
 	def paginate(self):
