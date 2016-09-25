@@ -156,7 +156,7 @@ def datatables_json():
 	http://docs.peewee-orm.com/en/latest/peewee/querying.html
 	'''
 
-	# defining columns
+	# defining columns (must match order of datatables)
 	columns = [
 		'title',
 		'identifier'
@@ -166,7 +166,7 @@ def datatables_json():
 	pdt = PeeweeDT(columns, Record, request.args)
 
 	# returns what is needed by DataTable
-	return jsonify(pdt.to_json())
+	return jsonify(pdt.DToutput.__dict__)
 
 
 
