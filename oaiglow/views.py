@@ -7,6 +7,9 @@ from flask import render_template, request, session, redirect, make_response, Re
 from oaiglow import db, logging, oaiglow_app, server
 from oaiglow.models import Identifier, Record
 
+# peeweeDT
+from oaiglow.peeweeDT import PeeweeDT
+
 # localConfig
 import localConfig
 
@@ -153,10 +156,17 @@ def datatables_json():
 	http://docs.peewee-orm.com/en/latest/peewee/querying.html
 	'''
 
-	print(request.args)
+	# defining columns
+	columns = [
+		'title',
+		'identifier'
+	]	
 
-	return jsonify({'msg':'fake data'})
+	# instantiating a DataTable for the query and table needed
+	pdt = PeeweeDT(columns, Record, request.args)
 
+	# returns what is needed by DataTable
+	return jsonify(pdt.to_json())
 
 
 
