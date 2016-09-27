@@ -62,14 +62,30 @@ class PeeweeDT(object):
 
 	def filter(self):
 		logging.debug('applying filters...')
-		# e.g.
+
 		search_string = self.DTinput['search']['value']
 		if search_string != '':
 			self.query = self.query.where(self.peewee_model.title.contains(search_string))
 
 
 	def sort(self):
+		
+		'''
+		Iterate through order_by columns
+		'''
+		
 		logging.debug('sorting...')
+
+		# get sort column
+		for order in self.DTinput['order']:
+			order_by_column = getattr(self.peewee_model,self.columns[order['column']])
+			order_by_dir = order['dir']
+			logging.debug('ordering by %s, %s' % (order_by_column, order_by_dir))
+			if order_by_dir == 'asc':
+				self.query = self.query.order_by(order_by_column.asc())
+			if order_by_dir == 'desc':
+				self.query = self.query.order_by(order_by_column.desc())
+			
 
 
 	def paginate(self):
