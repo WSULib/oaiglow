@@ -68,9 +68,16 @@ class PeeweeDT(object):
 			self.query = self.query.where(self.peewee_model.title.contains(search_string))
 
 
+	def sort(self):
+		logging.debug('sorting...')
+
+
 	def paginate(self):
+
 		logging.debug('paginating...')
-		self.query_slice = self.query.paginate((self.DTinput['start']+1), self.DTinput['length'])
+
+		# using offset (start) and limit (length)
+		self.query_slice = self.query.offset(self.DTinput['start']).limit(self.DTinput['length'])
 
 
 	def build_response(self):
@@ -85,6 +92,7 @@ class PeeweeDT(object):
 
 		# apply filtering
 		self.filter()
+		self.sort()
 		self.paginate()
 
 		# build DToutput

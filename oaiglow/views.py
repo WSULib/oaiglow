@@ -92,17 +92,12 @@ def wipe():
 @oaiglow_app.route("/%s/view" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
 def view():
 
-	return render_template("view.html", localConfig=localConfig)
-
-
-# view all records
-@oaiglow_app.route("/%s/view/all" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
-def view_all():
-
 	# get all records
 	all_records = list(Record.select())
 
 	return render_template("view_all.html", localConfig=localConfig, all_records=all_records)
+
+
 
 
 #####################
