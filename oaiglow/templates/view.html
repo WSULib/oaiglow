@@ -33,25 +33,28 @@
 		    }
 	    },
 		"columns": [
-	        { "name": "title", "title": "Title" },
-	        { "name": "abstract", "title": "Abstract" },
-	        { "name": "identifier", "title": "OAI Identifier" },
 	        { 
 	        	"name": "thumbnail_url",
 	        	"title": "Thumbnail",
+	        	"class": "text_centered",
 	        	"render": function (data, type, row, meta) {
 	        		console.log(data);
-			        return '<img height=64 src="' + data + '"/>';
+			        return '<img class="thumbnail" height={{localConfig.THUMBNAIL_HEIGHT}} src="' + data + '"/>';
 			    }
 	    	},
+	        { "name": "title", "title": "Title" },
+	        { "name": "abstract", "title": "Abstract" },
+	        { "name": "identifier", "title": "OAI Identifier" },	        
 	    	{ 
 	        	"name": "actions",
 	        	"title": "Actions",
+	        	"class": "text_centered",
 	        	"render": function (data, type, row, meta) {
-			        return '<a target="_blank" href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/'+row[2]+'" class="button">Details</a>';
+			        return '<a target="_blank" href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/'+row[3]+'" class="button">Record View</a>';
 			    }
 	    	}
-	    ]
+	    ],
+	    "pageLength": 50
 	  });  
 	});
 </script>

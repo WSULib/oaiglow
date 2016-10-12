@@ -91,3 +91,5 @@ ENV/
 # oaiglow
 localConfig.py
 *.db
+.DS*
+./**/.DS*

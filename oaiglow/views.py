@@ -180,10 +180,10 @@ def datatables_json():
 
 	# defining columns (must match order of datatables)
 	columns = [
+		'thumbnail_url',
 		'title',
 		'abstract',
-		'identifier',
-		'thumbnail_url'
+		'identifier'
 	]	
 
 	# instantiating a DataTable for the query and table needed

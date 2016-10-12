@@ -29,9 +29,17 @@ body {
 	margin-top:25px;
 }
 
+.text_centered {
+	text-align:center;
+}
+
 .container {
 	max-width:2048px;
 	width:90%;
+}
+
+.main_nav {
+	margin-bottom:0px;
 }
 
 .main_nav li {
@@ -45,9 +53,14 @@ body {
 
 table td,th {
 	padding:10px 20px 10px 0px;
+	/*font-size:80%;*/
 }
 
 table tr ul {
 	margin-top:10px;
 	margin-bottom:0px;
+}
+
+.thumbnail {
+	text-align:center;
 }
