@@ -95,8 +95,30 @@ def view():
 	# get all records
 	all_records = list(Record.select())
 
-	return render_template("view_all.html", localConfig=localConfig, all_records=all_records)
+	return render_template("view.html", localConfig=localConfig, all_records=all_records)
 
+
+
+####################
+# ABOUT
+####################
+
+# view home
+@oaiglow_app.route("/%s/about" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def about():
+
+	return render_template("about.html", localConfig=localConfig)
+
+
+####################
+# REPORTS
+####################
+
+# view home
+@oaiglow_app.route("/%s/reports" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+def reports():
+
+	return render_template("reports.html", localConfig=localConfig)
 
 
 

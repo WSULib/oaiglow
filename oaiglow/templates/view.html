@@ -2,17 +2,44 @@
 
 <div class="row">
 	<div class="twelve columns">
-		<h2>View</h2>
+		<h2>View Records</h2>
 	</div>
 </div>
 
 <div class="row">
 	<div class="twelve columns">
-		<ul>
-			<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all">view all records</a></li>
-		</ul>
+		
+		<!-- insert table here -->
+		<table id="record_table" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>            
+                    <th>title</th>
+                    <th>identifier</th>
+                </tr>
+            </thead>  
+            <tbody></tbody>          
+        </table>
+
 	</div>
 </div>
+
+<!-- JS -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+	  var table = $('#record_table').DataTable({
+	    "processing": true,
+	    "serverSide": true,
+	    "ajax": {
+	    	contentType: "application/json",
+    		type: "POST",
+    		url: "/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all/datatables_json",
+		    "data": function ( d ) {
+		      return JSON.stringify( d );
+		    }
+	    }
+	  });
+	});
+</script>
 
 {% include 'footer.html' %}
 
