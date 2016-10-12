@@ -55,12 +55,16 @@ def harvest_all():
 	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
 	total_count = records.resumption_token.complete_list_size
 
-	with db.atomic():
-		stime = time.time()
-		for record in records:
-			og_record = Record.create(record)
-			og_record.save()
-		logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
+	'''
+	Need to rework.  xpath retrieval of URLs are getting bungled.
+	'''
+
+	# with db.atomic():
+	stime = time.time()
+	for record in records:
+		og_record = Record.create(record)
+		og_record.save()
+	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
 	return render_template("harvest.html", localConfig=localConfig, app_msg="%s records harvested, total time elapsed %s seconds" % (total_count, (float(time.time()) - stime)))
 
@@ -95,6 +99,7 @@ def view():
 	all_records = list(Record.select())
 
 	return render_template("view.html", localConfig=localConfig, all_records=all_records)
+
 
 
 ####################

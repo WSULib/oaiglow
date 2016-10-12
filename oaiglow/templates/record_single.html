@@ -20,22 +20,35 @@
 						<td>{{record.identifier}}</td>
 					</tr>
 					<tr>
+						<td><strong>Live URL</strong></td>
+						<td><a target="_blank" href="{{record.primary_url}}">{{record.primary_url}}</a></td>
+					</tr>
+					<tr>
 						<td><strong>Thumbnail</strong></td>
 						<td><img src="{{record.thumbnail_url}}"/></td>
 					</tr>
 					<tr>
-						<td><strong>API</strong></td>
+						<td><strong>Abstract</strong></td>
+						<td>{{record.abstract}}</td>
+					</tr>
+					<tr>
+						<td><strong>Sources</strong></td>
 						<td>
-							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/raw">full record (XML)</a><br>
-							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/metadata">metadata (XML)</a>
+							<ul>
+								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/raw">Harvested OAI record</a></li>
+								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/metadata">Metadata subset</a></li>
+								<li><a href="{{localConfig.OAI_SERVER_BASE_URL}}?verb=GetRecord&metadataPrefix={{localConfig.OAI_METADATA_PREFIX}}&identifier={{record.identifier}}">Live OAI-PMH record</a></li>
+							</ul>
 						</td>
 					</tr>
 					<tr>
 						<td><strong>Actions</strong></td>
 						<td>
-							<a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br>
-							<a href="">Schematron Validation</a><br>
-							<a href="">DPLA view</a>
+							<ul>
+								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br></li>
+								<li><a href="">Schematron Validation</a><br></li>
+								<li><a href="">DPLA view</a></li>
+							</ul>
 						</td>
 					</tr>
 				</tbody>

@@ -34,5 +34,7 @@ Start console with some preliminary loading:
 Grab harvested record from DB:
 <pre><code>record = Record.get('[LONG OAI IDENTIFIER]')</code></pre>
 
+More to come...
+
 
 

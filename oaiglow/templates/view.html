@@ -48,7 +48,7 @@
 	        	"name": "actions",
 	        	"title": "Actions",
 	        	"render": function (data, type, row, meta) {
-			        return '<a href="" class="button">OAI Record</a><br><a href="" class="button">Live URL</a>';
+			        return '<a target="_blank" href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/'+row[2]+'" class="button">Details</a>';
 			    }
 	    	}
 	    ]

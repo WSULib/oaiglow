@@ -46,3 +46,8 @@ body {
 table td,th {
 	padding:10px 20px 10px 0px;
 }
+
+table tr ul {
+	margin-top:10px;
+	margin-bottom:0px;
+}
