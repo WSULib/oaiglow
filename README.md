@@ -10,6 +10,7 @@ General approach is:
  * DPLA single record preview
  * schematron validation
 
+
 ## Installation
 * Create python3, virtual environment:
 <pre><code>mkvirtualenv --python=/usr/bin/python3 oaiglow
@@ -22,6 +23,16 @@ General approach is:
 
 ## Run
 `python runserver.py`
+
+
+## Console
+Often, the console is a handy place for maintenence and debugging.  Here are some inroads for working with the API and database.
+
+Start console with some preliminary loading:
+<pre><code>./console.sh</code></pre>
+
+Grab harvested record from DB:
+<pre><code>record = Record.get('[LONG OAI IDENTIFIER]')</code></pre>
 
 
 

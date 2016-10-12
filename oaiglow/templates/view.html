@@ -2,7 +2,7 @@
 
 <div class="row">
 	<div class="twelve columns">
-		<h2>View Records</h2>
+		<h2>View</h2>
 	</div>
 </div>
 
@@ -11,12 +11,7 @@
 		
 		<!-- insert table here -->
 		<table id="record_table" class="display" cellspacing="0" width="100%">
-            <thead>
-                <tr>            
-                    <th>title</th>
-                    <th>identifier</th>
-                </tr>
-            </thead>  
+            <thead></thead>  
             <tbody></tbody>          
         </table>
 
@@ -32,12 +27,32 @@
 	    "ajax": {
 	    	contentType: "application/json",
     		type: "POST",
-    		url: "/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all/datatables_json",
-		    "data": function ( d ) {
+    		url: "/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all/datatables_json",    		
+		    data: function ( d ) {
 		      return JSON.stringify( d );
 		    }
-	    }
-	  });
+	    },
+		"columns": [
+	        { "name": "title", "title": "Title" },
+	        { "name": "abstract", "title": "Abstract" },
+	        { "name": "identifier", "title": "OAI Identifier" },
+	        { 
+	        	"name": "thumbnail_url",
+	        	"title": "Thumbnail",
+	        	"render": function (data, type, row, meta) {
+	        		console.log(data);
+			        return '<img height=64 src="' + data + '"/>';
+			    }
+	    	},
+	    	{ 
+	        	"name": "actions",
+	        	"title": "Actions",
+	        	"render": function (data, type, row, meta) {
+			        return '<a href="" class="button">OAI Record</a><br><a href="" class="button">Live URL</a>';
+			    }
+	    	}
+	    ]
+	  });  
 	});
 </script>
 

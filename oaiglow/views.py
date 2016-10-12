@@ -83,7 +83,6 @@ def wipe():
 	return render_template("harvest.html", localConfig=localConfig, app_msg="tables wiped and created")
 
 
-
 ####################
 # VIEW
 ####################
@@ -96,7 +95,6 @@ def view():
 	all_records = list(Record.select())
 
 	return render_template("view.html", localConfig=localConfig, all_records=all_records)
-
 
 
 ####################
@@ -178,7 +176,9 @@ def datatables_json():
 	# defining columns (must match order of datatables)
 	columns = [
 		'title',
-		'identifier'
+		'abstract',
+		'identifier',
+		'thumbnail_url'
 	]	
 
 	# instantiating a DataTable for the query and table needed

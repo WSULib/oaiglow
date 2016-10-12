@@ -63,9 +63,17 @@ class PeeweeDT(object):
 	def filter(self):
 		logging.debug('applying filters...')
 
+		'''
+		searching title, abstract, and identifier columns
+		'''
+
 		search_string = self.DTinput['search']['value']
 		if search_string != '':
-			self.query = self.query.where(self.peewee_model.title.contains(search_string))
+			self.query = self.query.where(
+				(self.peewee_model.title.contains(search_string)) |
+				(self.peewee_model.abstract.contains(search_string)) |
+				(self.peewee_model.identifier.contains(search_string))
+			)
 
 
 	def sort(self):

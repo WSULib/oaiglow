@@ -85,6 +85,7 @@ class Record(peewee.Model):
 	# metadata (payload and derived)
 	metadata_as_string = peewee.TextField()
 	title = peewee.TextField()
+	abstract = peewee.TextField()
 	thumbnail_url = peewee.CharField()
 
 	# about
@@ -132,6 +133,7 @@ class Record(peewee.Model):
 		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata').getchildren()[0]
 		metadata_as_string = etree.tostring(metadata)
 		title = sickle_record.metadata['title'][0]
+		abstract = sickle_record.metadata['abstract'][0]
 		thumbnail_url = metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
 
 		# return Record Instance
@@ -142,6 +144,7 @@ class Record(peewee.Model):
 			setSpec=setSpec,
 			metadata_as_string=metadata_as_string,
 			title=title,
+			abstract=abstract,
 			thumbnail_url=thumbnail_url,
 			metadata=metadata,
 			sickle=sickle_record

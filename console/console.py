@@ -16,7 +16,7 @@ db.connect()
 import sickle
 
 
-logging.debug('''
+print('''
     _------_
   -~        ~-
  -     _      -
@@ -32,21 +32,15 @@ logging.debug('''
        \/''')
 
 print('''
-Welcome to oaiglow console.
+Welcome to oaiglow console.''')
 
-testLiveServer() - init connection to configured OAI server, get test_records
-tableWipe() - wipe and recreate tables
-testIdentifier() = return test identifier
-staticRecords() = returns parsed static records
-staticSickleRecords([list_of_records]) = returns list of Sickle records from raw OAI server XML records, i.e. results of staticRecords() (shorthand: `sickle_records = staticSickleRecords(staticRecords())` )
-staticOGRecords() = returns oaiglow records
-insertAll(insert_type=['atomic','insert_many'] = inserts all static OG records, iterating or insert_many, both with `db.atomic()`
-''')
 
 server = False
 identifiers = False
 test_records = False
 cfai_example = False
+
+
 def testLiveServer():
 	# fire sickle server instance
 	logging.debug('firing server instance...')
@@ -62,6 +56,7 @@ def testLiveServer():
 
 	return [server,identifiers,test_records,cfai_example]
 
+
 # DB
 def tableWipe():
 	logging.debug('dropping tables...')
@@ -72,6 +67,7 @@ def tableWipe():
 			logging.debug('could not drop table, %s' % table)
 	logging.debug('creating tables...')
 	db.create_tables([Identifier,Record])
+
 
 # test store and retrieve identifier
 def testIdentifier():
@@ -110,3 +106,9 @@ def insertAll(og_records=staticOGRecords()):
 		for og in og_records:
 			og.save()
 	logging.info("total time for insert: %s" % (float(time.time()) - float(stime)))
+
+
+
+
+
+
