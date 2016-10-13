@@ -47,8 +47,12 @@ class ReverseProxied(object):
 
 # create app
 oaiglow_app = Flask(__name__)
-oaiglow_app.wsgi_app = ReverseProxied(oaiglow_app.wsgi_app)
-oaiglow_app.debug = True
+# if using app prefix, wrap Flask app in ReverseProxied class from above
+if localConfig.OAIGLOW_APP_PREFIX != '':
+	logging.debug("wrapping oaiglow for reverse proxy")
+	oaiglow_app.wsgi_app = ReverseProxied(oaiglow_app.wsgi_app)
+	oaiglow_app.config["APPLICATION_ROOT"] = "%s" % localConfig.OAIGLOW_APP_PREFIX
+
 
 # peewee ORM
 # init database
