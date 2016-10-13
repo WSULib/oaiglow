@@ -12,6 +12,8 @@ General approach is:
 
 
 ## Installation
+* Install dev tools for python3:
+<pre><code>sudo apt-get install python3-dev</code></pre> 
 * Create python3, virtual environment:
 <pre><code>mkvirtualenv --python=/usr/bin/python3 oaiglow
 \# depending on how you manage virtual environments, confirm using 'oaiglow' virtualenv</pre></code>
@@ -22,7 +24,7 @@ General approach is:
 * Create `localConfig.py` from `localConfig.py.template` and configure
 
 ## Run
-`python runserver.py`
+`./runserver.sh`
 
 
 ## Console
