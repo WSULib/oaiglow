@@ -21,7 +21,7 @@
 					</tr>
 					<tr>
 						<td><strong>Live URL</strong></td>
-						<td><a target="_blank" href="{{record.primary_url}}">{{record.primary_url}}</a></td>
+						<td><a href="{{record.primary_url}}">{{record.primary_url}}</a></td>
 					</tr>
 					<tr>
 						<td><strong>Thumbnail</strong></td>
@@ -46,8 +46,8 @@
 						<td>
 							<ul>
 								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br></li>
-								<li><a href="">Schematron Validation</a><br></li>
-								<li><a href="">DPLA view</a></li>
+								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/validate/schematron">Schematron Validation - {% if record.is_valid %}<span style="font-weight:bold;color:green;">Valid</span>{% else %}<span style="font-weight:bold;color:red;">Invalid</span>{% endif %}</a><br></li>
+								<!-- <li><a href="">DPLA view (in progress)</a></li> -->
 							</ul>
 						</td>
 					</tr>

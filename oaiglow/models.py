@@ -13,7 +13,7 @@ from sickle import Sickle
 from oaiglow import db, logging
 
 # generic
-from lxml import etree
+from lxml import etree, isoschematron
 
 
 # OAI-PMH server
@@ -181,7 +181,29 @@ class Record(peewee.Model):
 		self.save()
 
 
+	def validate_schematron(self):
 
+		logging.debug("validating %s via schematron" % self.identifier)
+
+		'''
+		Consider storing this in DB
+		Returns schematron object
+		'''
+
+		# open schematron and parse
+		with open('oaiglow/static/xml/DPLAminimum.sch','r') as fh:
+			sct_doc = etree.parse(fh)
+			schematron = isoschematron.Schematron(sct_doc, store_report=True)
+
+			# prepare metadata
+			self.metadata = etree.fromstring(self.metadata_as_string)
+
+			# validate
+			is_valid = schematron.validate(self.metadata)
+			self.is_valid = is_valid
+			self.schematron = schematron
+			return (is_valid,schematron)
+			
 
 
 

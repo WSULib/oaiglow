@@ -14,8 +14,9 @@ from oaiglow.peeweeDT import PeeweeDT
 import localConfig
 
 # generic
-import time
+from lxml import etree
 import json
+import time
 import urllib
 
 ####################
@@ -205,6 +206,9 @@ def sr(identifier):
 	# retrieve single record from database
 	record = Record.get(identifier)
 
+	# trigger validation
+	record.validate_schematron()
+
 	if record:
 		return render_template("record_single.html",localConfig=localConfig, record=record)
 	else:
@@ -257,6 +261,17 @@ def sr_metadata(identifier):
 	else:
 
 		return jsonify({"status":"no dice"})
+
+
+@oaiglow_app.route("/record/<identifier>/validate/schematron", methods=['POST', 'GET'])
+def sr_validate_schematron(identifier):
+
+	# retrieve single record from database
+	record = Record.get(identifier)
+	is_valid, schematron = record.validate_schematron()
+
+	return Response(etree.tostring(schematron.validation_report), mimetype='text/xml')
+
 
 
 
