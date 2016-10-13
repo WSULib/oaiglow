@@ -23,6 +23,21 @@ General approach is:
 
 * Create `localConfig.py` from `localConfig.py.template` and configure
 
+* If running behind reverse-proxy (recommended for URL patterns), add something similar to Apahce config:
+
+<pre><code># Oaiglow
+ProxyPass /oaiglow http://localhost:4800/
+ProxyPassReverse /oaiglow http://localhost:4800/
+
+&lt;Location /oaiglow&gt;
+    Order allow,deny
+    Allow from all
+    RequestHeader set X-SCRIPT-NAME /oaiglow
+    RequestHeader set X-SCHEME http
+    ExpiresActive On
+    ExpiresDefault "now"        
+&lt;/Location&gt;</code></pre>
+
 ## Run
 `./runserver.sh`
 

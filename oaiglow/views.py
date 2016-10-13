@@ -23,7 +23,7 @@ import urllib
 ####################
 
 # home index
-@oaiglow_app.route("/%s" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/", methods=['POST', 'GET'])
 def index():	
 
 	return render_template("index.html", localConfig=localConfig)
@@ -34,14 +34,14 @@ def index():
 ####################
 
 # harvest home
-@oaiglow_app.route("/%s/harvest" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/harvest", methods=['POST', 'GET'])
 def harvest():
 
 	return render_template("harvest.html", localConfig=localConfig)
 
 
 # harvest all records
-@oaiglow_app.route("/%s/harvest/all" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/harvest/all", methods=['POST', 'GET'])
 def harvest_all():
 
 	'''
@@ -70,7 +70,7 @@ def harvest_all():
 
 
 # wipe all records
-@oaiglow_app.route("/%s/harvest/wipe" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/harvest/wipe", methods=['POST', 'GET'])
 def wipe():
 
 	# dropping and creating tables
@@ -92,7 +92,7 @@ def wipe():
 ####################
 
 # view home
-@oaiglow_app.route("/%s/view" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/view", methods=['POST', 'GET'])
 def view():
 
 	# get all records
@@ -107,7 +107,7 @@ def view():
 ####################
 
 # view home
-@oaiglow_app.route("/%s/about" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/about", methods=['POST', 'GET'])
 def about():
 
 	return render_template("about.html", localConfig=localConfig)
@@ -118,7 +118,7 @@ def about():
 ####################
 
 # view home
-@oaiglow_app.route("/%s/reports" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/reports", methods=['POST', 'GET'])
 def reports():
 
 	return render_template("reports.html", localConfig=localConfig)
@@ -130,7 +130,7 @@ def reports():
 #####################
 
 # return json for job
-@oaiglow_app.route('/%s/view/all/datatables_json' % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route('/view/all/datatables_json', methods=['POST', 'GET'])
 def datatables_json():
 
 	'''
@@ -199,7 +199,7 @@ def datatables_json():
 ####################
 
 # view all records
-@oaiglow_app.route("/%s/record/<identifier>" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/record/<identifier>", methods=['POST', 'GET'])
 def sr(identifier):
 
 	# retrieve single record from database
@@ -212,7 +212,7 @@ def sr(identifier):
 
 
 # update record
-@oaiglow_app.route("/%s/record/<identifier>/update" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/record/<identifier>/update", methods=['POST', 'GET'])
 def sr_update(identifier):
 
 	# retrieve single record from database
@@ -229,7 +229,7 @@ def sr_update(identifier):
 		return render_template("record_single.html",localConfig=localConfig, app_msg="Could not retrieve record from database.")
 
 
-@oaiglow_app.route("/%s/record/<identifier>/raw" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/record/<identifier>/raw", methods=['POST', 'GET'])
 def sr_raw(identifier):
 
 	# retrieve single record from database
@@ -244,7 +244,7 @@ def sr_raw(identifier):
 		return jsonify({"status":"no dice"})
 
 
-@oaiglow_app.route("/%s/record/<identifier>/metadata" % (localConfig.OAIGLOW_APP_PREFIX), methods=['POST', 'GET'])
+@oaiglow_app.route("/record/<identifier>/metadata", methods=['POST', 'GET'])
 def sr_metadata(identifier):
 
 	# retrieve single record from database
