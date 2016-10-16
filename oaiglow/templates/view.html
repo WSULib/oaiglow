@@ -27,7 +27,7 @@
 	    "ajax": {
 	    	contentType: "application/json",
     		type: "POST",
-    		url: "/{{localConfig.OAIGLOW_APP_PREFIX}}/view/all/datatables_json",    		
+    		url: "{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view/all/datatables_json",    		
 		    data: function ( d ) {
 		      return JSON.stringify( d );
 		    }
@@ -50,7 +50,7 @@
 	        	"title": "Actions",
 	        	"class": "text_centered",
 	        	"render": function (data, type, row, meta) {
-			        return '<a target="_blank" href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/'+row[3]+'" class="button">Record View</a>';
+			        return '<a target="_blank" href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/'+row[3]+'" class="button">Record View</a>';
 			    }
 	    	}
 	    ],

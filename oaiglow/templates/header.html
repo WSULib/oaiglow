@@ -26,15 +26,15 @@
 			<div class="row">
 				<div class="twelve columns">
 					<ul class="main_nav">
-						<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}" class="app_title"><span>oaiglow</span></a></li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}" class="app_title"><span>oaiglow</span></a></li>
 						<li class="spacer_pipe">|</li>
-						<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/about">about</a></li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/about">about</a></li>
 						<li class="spacer_pipe">|</li>
-						<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/harvest">harvest</a></li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest">harvest</a></li>
 						<li class="spacer_pipe">|</li>
-						<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/view">view</a></li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view">view</a></li>
 						<li class="spacer_pipe">|</li>
-						<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/reports">reports</a></li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports">reports</a></li>
 					</ul>
 				</div>
 			</div>

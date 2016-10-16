@@ -35,8 +35,8 @@
 						<td><strong>Sources</strong></td>
 						<td>
 							<ul>
-								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/raw">Harvested OAI record</a></li>
-								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/metadata">Metadata subset</a></li>
+								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/raw">Harvested OAI record</a></li>
+								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/metadata">Metadata subset</a></li>
 								<li><a href="{{localConfig.OAI_SERVER_BASE_URL}}?verb=GetRecord&metadataPrefix={{localConfig.OAI_METADATA_PREFIX}}&identifier={{record.identifier}}">Live OAI-PMH record</a></li>
 							</ul>
 						</td>
@@ -45,8 +45,8 @@
 						<td><strong>Actions</strong></td>
 						<td>
 							<ul>
-								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br></li>
-								<li><a href="/{{localConfig.OAIGLOW_APP_PREFIX}}/record/{{record.identifier}}/validate/schematron">Schematron Validation - {% if record.is_valid %}<span style="font-weight:bold;color:green;">Valid</span>{% else %}<span style="font-weight:bold;color:red;">Invalid</span>{% endif %}</a><br></li>
+								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br></li>
+								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/validate/schematron">Schematron Validation - {% if record.is_valid %}<span style="font-weight:bold;color:green;">Valid</span>{% else %}<span style="font-weight:bold;color:red;">Invalid</span>{% endif %}</a><br></li>
 								<!-- <li><a href="">DPLA view (in progress)</a></li> -->
 							</ul>
 						</td>
