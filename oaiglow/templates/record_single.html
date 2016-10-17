@@ -42,12 +42,32 @@
 						</td>
 					</tr>
 					<tr>
+						<td><strong>Validation</strong></td>
+						<!-- <td>
+							<ul>
+								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/validate/schematron">Schematron Validation - {% if record.is_valid %}<span style="font-weight:bold;color:green;">Valid</span>{% else %}<span style="font-weight:bold;color:red;">Invalid</span>{% endif %}</a><br></li>
+							</ul>
+						</td> -->
+						<td>
+							<table class="table">
+								<tr>
+									<th>Name</th>
+									<th>Result</th>
+								</tr>
+								{% for validation in record.validation_results %}
+									<tr>
+										<td>{{validation.schematron.name}}</td>
+										<td>{% if validation.result %}<span style="color:green;">Valid</span>{% else %}<span style="color:red;">Invalid</span>{% endif %}</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</td>
+					</tr>
+					<tr>
 						<td><strong>Actions</strong></td>
 						<td>
 							<ul>
 								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/update">Update from OAI-PMH server</a><br></li>
-								<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/validate/schematron">Schematron Validation - {% if record.is_valid %}<span style="font-weight:bold;color:green;">Valid</span>{% else %}<span style="font-weight:bold;color:red;">Invalid</span>{% endif %}</a><br></li>
-								<!-- <li><a href="">DPLA view (in progress)</a></li> -->
 							</ul>
 						</td>
 					</tr>

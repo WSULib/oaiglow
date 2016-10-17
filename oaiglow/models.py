@@ -49,7 +49,7 @@ class Identifier(peewee.Model):
 	datestamp = peewee.DateField()
 	deleted = peewee.BooleanField()
 	identifier = peewee.CharField()
-	raw= peewee.CharField()
+	raw = peewee.CharField()
 	setSpecs = peewee.CharField()
 	xml = None
 
@@ -181,34 +181,79 @@ class Record(peewee.Model):
 		self.save()
 
 
-	def validate_schematron(self):
+	# def validate_schematron(self):
 
-		logging.debug("validating %s via schematron" % self.identifier)
+	# 	logging.debug("validating %s via schematron" % self.identifier)
 
-		'''
-		Consider storing this in DB
-		Returns schematron object
-		'''
+	# 	'''
+	# 	Consider storing this in DB
+	# 	Returns schematron object
+	# 	'''
 
-		# open schematron and parse
-		with open('oaiglow/static/xml/DPLAminimum.sch','r') as fh:
-			sct_doc = etree.parse(fh)
-			schematron = isoschematron.Schematron(sct_doc, store_report=True)
+	# 	# open schematron and parse
+	# 	with open('oaiglow/static/xml/DPLAminimum.sch','r') as fh:
+	# 		sct_doc = etree.parse(fh)
+	# 		schematron = isoschematron.Schematron(sct_doc, store_report=True)
 
+	# 		# prepare metadata
+	# 		self.metadata = etree.fromstring(self.metadata_as_string)
+
+	# 		# validate
+	# 		is_valid = schematron.validate(self.metadata)
+	# 		self.is_valid = is_valid
+	# 		self.schematron = schematron
+	# 		return (is_valid,schematron)
+
+
+	def validate_schematrons(self):
+
+		logging.debug("validating schematrons for %s" % self.identifier)
+
+		# result dictionary
+		validation_results = []
+
+		# get current schematron validations
+		schematrons = Schematron.select()
+
+		for schematron in schematrons:
+			logging.info("validating on %s / %s" % (schematron.name, schematron.filename))
+			sct_doc = etree.fromstring(schematron.xml.encode('utf-8'))
+			validator = isoschematron.Schematron(sct_doc, store_report=True)
 			# prepare metadata
 			self.metadata = etree.fromstring(self.metadata_as_string)
-
 			# validate
-			is_valid = schematron.validate(self.metadata)
-			self.is_valid = is_valid
-			self.schematron = schematron
-			return (is_valid,schematron)
+			is_valid = validator.validate(self.metadata)
+
+			# add to results dictionary
+			validation_results.append({
+				'schematron':schematron,
+				'result':is_valid,
+				'validator':validator
+			})
+
+		self.validation_results = validation_results
 			
 
+class Schematron(peewee.Model):
 
+	'''
+	ORM wrapper for Schematron validation files
+	'''
 
+	name = peewee.CharField()
+	filename = peewee.CharField()
+	xml = peewee.TextField()
 
+	class Meta:
+		database = db
 
+	@classmethod
+	def create(cls, name, filename, xml):
+		return cls(
+			name=name,
+			filename=filename,
+			xml=xml,
+		)
 
 
 

@@ -5,7 +5,7 @@ from flask import render_template, request, session, redirect, make_response, Re
 
 # oaiglow flask app
 from oaiglow import db, logging, oaiglow_app, server
-from oaiglow.models import Identifier, Record
+from oaiglow.models import Identifier, Record, Schematron
 
 # peeweeDT
 from oaiglow.peeweeDT import PeeweeDT
@@ -28,6 +28,63 @@ import urllib
 def index():	
 
 	return render_template("index.html", localConfig=localConfig)
+
+
+
+####################
+# CONFIG
+####################
+
+# config
+@oaiglow_app.route("/config", methods=['POST', 'GET'])
+def config():	
+
+	# get current schematron validations
+	schematrons = Schematron.select()
+
+	return render_template("config.html", localConfig=localConfig, schematrons=schematrons)
+
+
+# config - add schematron
+@oaiglow_app.route("/config/schematron/add", methods=['POST'])
+def schematron_add():	
+
+	# adding new schematron
+	logging.info("adding new schematron")
+	name = request.form['schematron_name']
+	# get file
+	filename = request.files['upload'].filename
+	xml = request.files['upload'].read()
+	schematron = Schematron.create(name, filename, xml)
+	schematron.save()
+	logging.info("schematron, %s / %s added" % (name,filename))
+
+	return redirect("config")
+
+
+# config - delete schematron
+@oaiglow_app.route("/config/schematron/delete/<schematron_filename>", methods=['POST', 'GET'])
+def schematron_delete(schematron_filename):	
+
+	# get schematron
+	schematron = Schematron.select().where(Schematron.filename == schematron_filename).first()
+	name = schematron.name
+	filename = schematron.filename
+
+	# delete from db
+	schematron.delete_instance()
+	db.commit()
+
+	return redirect("config")
+
+
+# config - view schematron
+@oaiglow_app.route("/config/schematron/view/<schematron_filename>", methods=['POST', 'GET'])
+def schematron_view(schematron_filename):	
+
+	# get schematron
+	schematron = Schematron.select().where(Schematron.filename == schematron_filename).first()
+	return Response(schematron.xml, mimetype='text/xml')
 
 
 ####################
@@ -67,22 +124,22 @@ def harvest_all():
 		og_record.save()
 	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
-	return render_template("harvest.html", localConfig=localConfig, app_msg="%s records harvested, total time elapsed %s seconds" % (total_count, (float(time.time()) - stime)))
+	return render_template("index.html", localConfig=localConfig, app_msg="%s records harvested, total time elapsed %s seconds" % (total_count, (float(time.time()) - stime)))
 
 
 # wipe all records
-@oaiglow_app.route("/harvest/wipe", methods=['POST', 'GET'])
+@oaiglow_app.route("/harvest/purge", methods=['POST', 'GET'])
 def wipe():
 
 	# dropping and creating tables
 	logging.info('dropping tables...')
-	for table in [Identifier,Record]:
+	for table in [Identifier, Record]:
 		try:
 			db.drop_table(table)
 		except:
 			logging.info('could not drop table, %s' % table)
 	logging.info('creating tables...')
-	db.create_tables([Identifier,Record])
+	db.create_tables([Identifier, Record])
 	logging.info("tableWipe complete.")
 
 	return render_template("harvest.html", localConfig=localConfig, app_msg="tables wiped and created")
@@ -206,8 +263,8 @@ def sr(identifier):
 	# retrieve single record from database
 	record = Record.get(identifier)
 
-	# trigger validation
-	record.validate_schematron()
+	# validate over current schematrons
+	record.validate_schematrons()
 
 	if record:
 		return render_template("record_single.html",localConfig=localConfig, record=record)
