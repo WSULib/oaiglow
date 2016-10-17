@@ -40,13 +40,17 @@
 					</ul>
 				</div>
 			</div>
-
-			{% if app_msg %}
-				<div class="row">
-					<div id="app_msg" class="twelve columns">
-						<p>{{app_msg}}</p>
+			
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class="row">
+						<div id="app_msg" class="twelve columns">
+							{% for message in messages %}
+								<p>{{ message }}</p>
+							{% endfor %}
+						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endif %}
+			{% endwith %}
 
 	<hr>

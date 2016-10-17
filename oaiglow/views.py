@@ -1,7 +1,7 @@
 # views for oaiglow
 
 # flask proper
-from flask import render_template, request, session, redirect, make_response, Response, jsonify
+from flask import render_template, request, session, redirect, make_response, Response, jsonify, flash, url_for
 
 # oaiglow flask app
 from oaiglow import db, logging, oaiglow_app, server
@@ -25,9 +25,16 @@ import urllib
 
 # home index
 @oaiglow_app.route("/", methods=['POST', 'GET'])
-def index():	
+def index():
 
-	return render_template("index.html", localConfig=localConfig)
+	# get target state
+	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
+	total_count = records.resumption_token.complete_list_size
+
+	# get records state
+	records = Record.select()
+
+	return render_template("index.html", localConfig=localConfig, total_count=total_count, records=records)
 
 
 
@@ -124,7 +131,8 @@ def harvest_all():
 		og_record.save()
 	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
-	return render_template("index.html", localConfig=localConfig, app_msg="%s records harvested, total time elapsed %s seconds" % (total_count, (float(time.time()) - stime)))
+	flash('Records harvested: %s, in %s seconds' % (total_count, (float(time.time()) - stime)))
+	return redirect(url_for('harvest'))
 
 
 # wipe all records
@@ -142,7 +150,8 @@ def wipe():
 	db.create_tables([Identifier, Record])
 	logging.info("tableWipe complete.")
 
-	return render_template("harvest.html", localConfig=localConfig, app_msg="tables wiped and created")
+	flash("Records cleared.")
+	return redirect(url_for('harvest'))
 
 
 ####################

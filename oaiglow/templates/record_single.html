@@ -53,7 +53,7 @@
 								{% for validation in record.validation_results %}
 									<tr>
 										<td>{{validation.schematron.name}}</td>
-										<td>{% if validation.result %}<span style="color:green;">Valid</span>{% else %}<span style="color:red;">Invalid</span>{% endif %}</td>
+										<td>{% if validation.result %}<span style="color:green; font-weight:bold;">Valid</span>{% else %}<span style="color:red; font-weight:bold;">Invalid</span>{% endif %}</td>
 										<td><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/{{record.identifier}}/validate/schematron/{{validation.schematron.id}}">report</a></td>
 									</tr>
 								{% endfor %}
