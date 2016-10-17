@@ -56,9 +56,13 @@ body {
 	margin-right:5px;
 }
 
+table {
+
+}
+
 table td,th {
 	padding:10px 20px 10px 0px;
-	/*font-size:80%;*/
+	border-bottom:none;
 }
 
 table tr ul {
@@ -69,3 +73,25 @@ table tr ul {
 .thumbnail {
 	text-align:center;
 }
+
+.embed_table {
+	margin-bottom:0px;
+}
+
+.embed_table tr:nth-child(odd) {
+	border-bottom: 1px solid #E1E1E1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

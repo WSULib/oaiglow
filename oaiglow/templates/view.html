@@ -24,6 +24,7 @@
 	  var table = $('#record_table').DataTable({
 	    "processing": true,
 	    "serverSide": true,
+	    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 	    "ajax": {
 	    	contentType: "application/json",
     		type: "POST",
@@ -38,7 +39,6 @@
 	        	"title": "Thumbnail",
 	        	"class": "text_centered",
 	        	"render": function (data, type, row, meta) {
-	        		console.log(data);
 			        return '<img class="thumbnail" height={{localConfig.THUMBNAIL_HEIGHT}} src="' + data + '"/>';
 			    }
 	    	},
@@ -54,7 +54,7 @@
 			    }
 	    	}
 	    ],
-	    "pageLength": 50
+	    "pageLength": 5
 	  });  
 	});
 </script>

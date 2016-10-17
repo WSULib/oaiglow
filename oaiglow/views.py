@@ -63,11 +63,11 @@ def schematron_add():
 
 
 # config - delete schematron
-@oaiglow_app.route("/config/schematron/delete/<schematron_filename>", methods=['POST', 'GET'])
-def schematron_delete(schematron_filename):	
+@oaiglow_app.route("/config/schematron/delete/<schematron_id>", methods=['POST', 'GET'])
+def schematron_delete(schematron_id):	
 
 	# get schematron
-	schematron = Schematron.select().where(Schematron.filename == schematron_filename).first()
+	schematron = Schematron.select().where(Schematron.id == schematron_id).first()
 	name = schematron.name
 	filename = schematron.filename
 
@@ -79,11 +79,11 @@ def schematron_delete(schematron_filename):
 
 
 # config - view schematron
-@oaiglow_app.route("/config/schematron/view/<schematron_filename>", methods=['POST', 'GET'])
-def schematron_view(schematron_filename):	
+@oaiglow_app.route("/config/schematron/view/<schematron_id>", methods=['POST', 'GET'])
+def schematron_view(schematron_id):	
 
 	# get schematron
-	schematron = Schematron.select().where(Schematron.filename == schematron_filename).first()
+	schematron = Schematron.select().where(Schematron.id == schematron_id).first()
 	return Response(schematron.xml, mimetype='text/xml')
 
 
@@ -320,14 +320,20 @@ def sr_metadata(identifier):
 		return jsonify({"status":"no dice"})
 
 
-@oaiglow_app.route("/record/<identifier>/validate/schematron", methods=['POST', 'GET'])
-def sr_validate_schematron(identifier):
+@oaiglow_app.route("/record/<identifier>/validate/schematron/<schematron_id>", methods=['POST', 'GET'])
+def sr_validate_schematron(identifier, schematron_id):
+
+	# get schematron
+	schematron = Schematron.select().where(Schematron.id == schematron_id).first()
 
 	# retrieve single record from database
 	record = Record.get(identifier)
-	is_valid, schematron = record.validate_schematron()
+	record.validate_schematrons()
+	
+	# return report for this schematron id
+	validation = [ validation for validation in record.validation_results if validation['schematron'].id == int(schematron_id) ][0]
 
-	return Response(etree.tostring(schematron.validation_report), mimetype='text/xml')
+	return Response(etree.tostring(validation['validator'].validation_report), mimetype='text/xml')
 
 
 

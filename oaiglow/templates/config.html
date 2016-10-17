@@ -20,7 +20,7 @@
 				<tr>
 					<td>{{schematron.name}}</td>
 					<td>{{schematron.filename}}</td>
-					<td><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/view/{{schematron.filename}}">View</a><span class="spacer_pipe">|</span><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/delete/{{schematron.filename}}">Delete</a></td>
+					<td><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/view/{{schematron.id}}">View</a><span class="spacer_pipe">|</span><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/delete/{{schematron.id}}">Delete</a></td>
 				</tr>
 			{% endfor %}
 		</table>
