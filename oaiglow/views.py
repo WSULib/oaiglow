@@ -227,6 +227,9 @@ def sr_update(identifier):
 		# update record from OAI-PMH server
 		record.update()	
 
+		# trigger validation
+		record.validate_schematron()
+
 		return render_template("record_single.html",localConfig=localConfig, record=record, app_msg="Record updated!")
 
 	else:
