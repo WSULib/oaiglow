@@ -46,14 +46,24 @@ body {
 	display:inline;
 }
 
+.config_section {
+	padding:20px;
+	background-color:rgba(146, 146, 146, 0.15);
+	border-radius:10px;
+}
+
 .spacer_pipe {
 	margin-left:5px;
 	margin-right:5px;
 }
 
+table {
+
+}
+
 table td,th {
 	padding:10px 20px 10px 0px;
-	/*font-size:80%;*/
+	border-bottom:none;
 }
 
 table tr ul {
@@ -64,3 +74,29 @@ table tr ul {
 .thumbnail {
 	text-align:center;
 }
+
+.embed_table {
+	margin-bottom:0px;
+}
+
+.embed_table tr:nth-child(odd):not(:only-child) {
+	border-bottom: 1px solid #E1E1E1;
+}
+
+input.white_background{
+	background-color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -35,16 +35,22 @@
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view">view</a></li>
 						<li class="spacer_pipe">|</li>
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports">reports</a></li>
+						<li class="spacer_pipe">|</li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config">config</a></li>
 					</ul>
 				</div>
 			</div>
-
-			{% if app_msg %}
-				<div class="row">
-					<div id="app_msg" class="twelve columns">
-						<p>{{app_msg}}</p>
+			
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class="row">
+						<div id="app_msg" class="twelve columns">
+							{% for message in messages %}
+								<p>{{ message }}</p>
+							{% endfor %}
+						</div>
 					</div>
-				</div>
-			{% endif %}
+				{% endif %}
+			{% endwith %}
 
 	<hr>

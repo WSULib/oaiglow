@@ -5,7 +5,8 @@ logging.basicConfig(level=logging.INFO)
 
 # oaiglow app
 OAIGLOW_APP_PORT = 4800
-OAIGLOW_APP_PREFIX = 'oaiglow'
+OAIGLOW_APP_PREFIX = '/oaiglow' # include leading slash
+OAIGLOW_APP_PREFIX_USE = True
 
 # OAI server
 OAI_SERVER_NAME = 'handy_name'

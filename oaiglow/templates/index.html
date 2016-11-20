@@ -3,9 +3,26 @@
 <div class="row">
 	<div class="twelve columns">
 		<h2>Home</h2>
-		<p>Welcome to oaiglow.</p>
-		<p>The goal of this utility is to harvest OAI-PMH records, preview their metadata as they might look in DPLA, and run schematron based validation on a record-by-record basis.</p>
-		<p style="color:red;">Include config and current state of DB here</p>
+		<p>Welcome to oaiglow!  The goal of this utility is to harvest OAI-PMH records, preview their metadata as they might look in DPLA, and run schematron based validation on a record-by-record basis.</p>
+		<h5>Current OAI-PMH Configurations</h5>
+		<table class="table">
+			<tr>
+				<th>Server</th>
+				<th>URL</th>
+				<th>Target set</th>
+				<th>Metadata prefix</th>
+				<th>Reported Records</th>
+				<th>Harvested Records</th>
+			</tr>
+			<tr>
+				<td>{{localConfig.OAI_SERVER_NAME}}</td>
+				<td><a href="{{localConfig.OAI_SERVER_BASE_URL}}?verb=Identify">{{localConfig.OAI_SERVER_BASE_URL}}</a></td>
+				<td>{{localConfig.OAI_SET}}</td>
+				<td>{{localConfig.OAI_METADATA_PREFIX}}</td>
+				<td>{{total_count}}</td>
+				<td>{{records.count()}}</td>
+			</tr>
+		</table>
 	</div>
 </div>
 
