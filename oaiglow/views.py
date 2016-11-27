@@ -150,8 +150,8 @@ def wipe():
 	db.create_tables([Identifier, Record])
 	logging.info("tableWipe complete.")
 
-	flash("Records cleared.")
-	return redirect(url_for('harvest'))
+	flash("Tables dropped, recreated.  Records wiped.")
+	return redirect(url_for('config'))
 
 
 ####################
@@ -294,7 +294,7 @@ def sr_update(identifier):
 		record.update()	
 
 		# trigger validation
-		record.validate_schematron()
+		record.validate_schematrons()
 
 		return render_template("record_single.html",localConfig=localConfig, record=record, app_msg="Record updated!")
 

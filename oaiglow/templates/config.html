@@ -29,7 +29,7 @@
 		<h5>Add Schematron Validation</h5>
 		<form class="form" method="POST" action="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/add" enctype="multipart/form-data">
 			<div class="row">
-			    <div class="four columns">
+			    <div class="twelve columns">
 			        <label for="exampleEmailInput">Schematron, human readable name</label>
 			        <input class="u-full-width" type="text" name="schematron_name" placeholder="DPLA minimum" id="schematron_name">
 			        <br><br>
@@ -40,6 +40,11 @@
 			    </div>
 		    </div>
 		</form>
+	</div>
+
+	<div class="six columns config_section">
+		<h4>Database</h4>
+		<p><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest/purge"><button class="btn white_background">Drop and Recreate Tables</button></a></p>
 	</div>
 </div>
 

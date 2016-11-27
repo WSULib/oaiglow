@@ -9,13 +9,8 @@
   * celery?  anything more lightweight?
  * sockets?
 
-* global viewing
- * add datatables for viewing harvested records
- * give clear, obvious total counts
-
 * single item page
  * DPLA preview?
- * schematron validation?
 
 * utilities / helper functions
  * consider moving reusable functions from `console` to `utilities.py` file?
