@@ -191,6 +191,16 @@ def reports():
 	return render_template("reports.html", localConfig=localConfig)
 
 
+# view home
+@oaiglow_app.route("/reports/validate_schematrons", methods=['POST', 'GET'])
+def schematron_report():
+
+	# run schematron validations on all records here...
+
+	flash('Scheamtrons have been run.')
+	return redirect(url_for('reports'))
+
+
 
 #####################
 # Datatables Endpoint
