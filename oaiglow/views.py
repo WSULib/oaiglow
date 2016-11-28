@@ -200,10 +200,10 @@ def schematron_report():
 
 	logging.debug("validating schematrons for all records...")
 	stime = time.time()
-	with db.atomic():
-		for record in Record.select():
-			record.validate_schematrons()
-	db.commit()
+	# with db.atomic(): # turning off atomic updates, memory leak?
+	for record in Record.select():
+		record.validate_schematrons()
+	# db.commit() # for atomic update
 
 	flash('Scheamtrons have been run. %s seconds elapsed.' % ((float(time.time()) - stime)))
 	return redirect(url_for('reports'))
