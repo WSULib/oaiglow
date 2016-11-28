@@ -89,6 +89,9 @@ class Record(peewee.Model):
 	primary_url = peewee.CharField()
 	thumbnail_url = peewee.CharField()
 
+	# validations
+	schematron_validation_score = peewee.FloatField()
+
 	# about
 	'''
 	Skipping about section from REPOX for now, looks to be showing provenance of original record?
@@ -135,6 +138,9 @@ class Record(peewee.Model):
 		metadata_as_string = etree.tostring(metadata)
 		title = sickle_record.metadata['title'][0]
 		abstract = sickle_record.metadata['abstract'][0]
+
+		# validations
+		schematron_validation_score = 0.0
 		
 		# extract URLs
 		#####################################################################################################################
@@ -159,12 +165,13 @@ class Record(peewee.Model):
 			primary_url=primary_url,
 			thumbnail_url=thumbnail_url,
 			metadata=metadata,
-			sickle=sickle_record
+			sickle=sickle_record,
+			schematron_validation_score=schematron_validation_score
 		)
 
 
 	# update record from OAI-PMH server
-	def update(self):
+	def update_from_server(self):
 
 		logging.info("updating record: %s" % self.identifier)
 
@@ -182,6 +189,10 @@ class Record(peewee.Model):
 
 
 	def validate_schematrons(self):
+
+		'''
+		Validate schematrons
+		'''
 
 		logging.debug("validating schematrons for %s" % self.identifier)
 
@@ -208,6 +219,13 @@ class Record(peewee.Model):
 			})
 
 		self.validation_results = validation_results
+
+		# update schematron_validation_score
+		val_bools = [ test['result'] for test in self.validation_results ]
+		self.schematron_validation_score = sum(val_bools) / len(val_bools)
+		logging.debug("updating schematron_validation_score to %s" % self.schematron_validation_score)
+		self.save()
+
 		return validation_results
 			
 

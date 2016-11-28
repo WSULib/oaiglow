@@ -197,7 +197,17 @@ def schematron_report():
 
 	# run schematron validations on all records here...
 
-	flash('Scheamtrons have been run.')
+	'''
+	For record in records:
+		run record.validate_schematrons()
+	'''
+
+	logging.debug("validating schematrons for all records...")
+	stime = time.time()
+	for record in Record.select():
+		record.validate_schematrons()
+
+	flash('Scheamtrons have been run. %s seconds elapsed.' % ((float(time.time()) - stime)))
 	return redirect(url_for('reports'))
 
 
@@ -260,7 +270,8 @@ def datatables_json():
 		'thumbnail_url',
 		'title',
 		'abstract',
-		'identifier'
+		'identifier',
+		'schematron_validation_score'
 	]	
 
 	# instantiating a DataTable for the query and table needed
@@ -301,7 +312,7 @@ def sr_update(identifier):
 	if record:
 
 		# update record from OAI-PMH server
-		record.update()	
+		record.update_from_server()	
 
 		# trigger validation
 		record.validate_schematrons()
@@ -361,8 +372,4 @@ def sr_validate_schematron(identifier, schematron_id):
 
 
 
-
-####################
-# REPORTS
-####################
 
