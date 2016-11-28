@@ -117,7 +117,7 @@ def harvest_all():
 	logging.debug("preparing to harvest all records")
 
 	# retrieve records to harvest and store in DB
-	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
+	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX, set=localConfig.OAI_SET)
 	total_count = records.resumption_token.complete_list_size
 
 	# consider atomic updates?
