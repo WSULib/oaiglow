@@ -120,11 +120,7 @@ def harvest_all():
 	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
 	total_count = records.resumption_token.complete_list_size
 
-	'''
-	Need to rework.  xpath retrieval of URLs are getting bungled.
-	'''
-
-	# with db.atomic():
+	# consider atomic updates?
 	stime = time.time()
 	for record in records:
 		og_record = Record.create(record)
@@ -204,8 +200,10 @@ def schematron_report():
 
 	logging.debug("validating schematrons for all records...")
 	stime = time.time()
-	for record in Record.select():
-		record.validate_schematrons()
+	with db.atomic():
+		for record in Record.select():
+			record.validate_schematrons()
+	db.commit()
 
 	flash('Scheamtrons have been run. %s seconds elapsed.' % ((float(time.time()) - stime)))
 	return redirect(url_for('reports'))
