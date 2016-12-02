@@ -174,7 +174,7 @@ class Record(peewee.Model):
 	# update record from OAI-PMH server
 	def update_from_server(self):
 
-		logging.info("updating record: %s" % self.identifier)
+		logging.debug("updating record: %s" % self.identifier)
 
 		# delete db instance
 		logging.debug("deleteing db instance")

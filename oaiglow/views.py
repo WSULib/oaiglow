@@ -124,8 +124,12 @@ def harvest_all():
 	# consider atomic updates?
 	stime = time.time()
 	for record in records:
-		og_record = Record.create(record)
-		og_record.save()
+		# check if record already exists
+		if not Record.select().where(Record.identifier == record.header.identifier).exists():
+			og_record = Record.create(record)
+			og_record.save()
+		else:
+			logging.info("skipping record, already exists...")
 	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
 	flash('Records harvested: %s, in %s seconds' % (total_count, (float(time.time()) - stime)))
@@ -149,6 +153,21 @@ def wipe():
 
 	flash("Tables dropped, recreated.  Records wiped.")
 	return redirect(url_for('config'))
+
+
+# wipe all records
+@oaiglow_app.route("/harvest/update/all", methods=['POST', 'GET'])
+def update_all():
+
+	records = Record.select().iterator()
+	count = Record.select().count()
+	stime = time.time()
+	for index, record in enumerate(records):
+		logging.info("validated %s/%s" % (index+1, count))
+		record.update_from_server()
+	ttime = float(time.time()) - stime
+	flash("%s records updated, in %.3f seconds." % (count,ttime))
+	return redirect(url_for('harvest'))
 
 
 ####################

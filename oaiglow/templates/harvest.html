@@ -9,8 +9,12 @@
 <div class="row">
 	<div class="twelve columns">
 		<ul>
-			<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest/all">Full harvest</a></li>
-			<li><a href="#">Update all records</a></li>
+			<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest/all" onclick="longRunner();"><button class="btn white_background">Full harvest</button></a></li>
+			<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest/update/all" onclick="longRunner();"><button class="btn white_background">Update all records</button></a>
+				<ul>
+					<li>Potentially slower than a full harvest</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </div>

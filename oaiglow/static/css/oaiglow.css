@@ -79,6 +79,10 @@ table tr ul {
 	text-align:center;
 }
 
+ul ul {
+	font-size: 100%;
+}
+
 .embed_table {
 	margin-bottom:0px;
 }
@@ -91,10 +95,29 @@ input.white_background{
 	background-color: white;
 }
 
+.orange_background {
+	background-color: #ffe8c5;
+}
+
 .white_background {
 	background-color: white;
 }
 
+#job_status {
+	display:none;
+	background-color:#ffdfdf;
+	border-radius:10px;
+	padding:20px 20px 0px 20px;
+	/*animation: blinker 1s linear infinite;*/
+}
+
+#job_status p {
+	/*padding: 10px;*/
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
 
 
 

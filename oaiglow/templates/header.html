@@ -17,6 +17,13 @@
 		<script src="{{ url_for('static',filename='inc/datatables/jquery.dataTables.min.js')}}"></script>
 		<link rel="stylesheet" href="{{ url_for('static',filename='inc/datatables/jquery.dataTables.min.css')}}">
 
+		<!-- long running job script -->
+		<script>
+			function longRunner(msg){
+				$("#job_status").fadeToggle();
+			}
+		</script>
+
 	</head>
 
 	<body>
@@ -28,8 +35,8 @@
 					<ul class="main_nav">
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/" class="app_title"><span>oaiglow</span></a></li>
 						<li class="spacer_pipe">|</li>
-						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/about">about</a></li>
-						<li class="spacer_pipe">|</li>
+						<!-- <li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/about">about</a></li>
+						<li class="spacer_pipe">|</li> -->
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest">harvest</a></li>
 						<li class="spacer_pipe">|</li>
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view">view</a></li>
@@ -41,6 +48,7 @@
 						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config">config</a></li>
 					</ul>
 				</div>
+				
 			</div>
 			
 			{% with messages = get_flashed_messages() %}
@@ -54,5 +62,11 @@
 					</div>
 				{% endif %}
 			{% endwith %}
+
+			<div id="job_status" class="row">
+				<div class="twelve columns">
+					<p>Job Running...</p>
+				</div>
+			</div>
 
 	<hr>
