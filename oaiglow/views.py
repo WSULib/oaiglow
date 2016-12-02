@@ -16,6 +16,7 @@ import localConfig
 # generic
 from lxml import etree
 import json
+import random
 import time
 import urllib
 
@@ -158,10 +159,21 @@ def wipe():
 @oaiglow_app.route("/view", methods=['POST', 'GET'])
 def view():
 
-	# get all records
-	all_records = list(Record.select())
+	return render_template("view.html", localConfig=localConfig)
 
-	return render_template("view.html", localConfig=localConfig, all_records=all_records)
+
+# view home
+@oaiglow_app.route("/view/random", methods=['POST', 'GET'])
+def view_random():
+
+	# get record count
+	records = Record.select()
+
+	# random record
+	random_record_id = random.randint(1, records.count())
+	random_record = records[random_record_id]
+
+	return redirect(url_for('sr', identifier=random_record.identifier))
 
 
 
