@@ -198,14 +198,20 @@ def schematron_report():
 		run record.validate_schematrons()
 	'''
 
-	logging.debug("validating schematrons for all records...")
+	logging.info("validating schematrons for all records...")
 	stime = time.time()
-	# with db.atomic(): # turning off atomic updates, memory leak?
-	for record in Record.select():
-		record.validate_schematrons()
-	# db.commit() # for atomic update
+	count = Record.select().count()
+	records = Record.select().iterator()
+	with db.atomic(): # turning off atomic updates, memory leak?
+		for index, record in enumerate(records):
+			srtime = time.time()
+			record.validate_schematrons()
+			ertime = time.time()
+			logging.info("validated %s/%s, elapsed %s" % (index+1,count,(ertime - srtime)))
+	db.commit()
 
-	flash('Scheamtrons have been run. %s seconds elapsed.' % ((float(time.time()) - stime)))
+	ttime = float(time.time()) - stime
+	flash('Scheamtrons have been run. %.3f seconds elapsed for %s total records, %.3f records/per second' % ((ttime,count,float(count/ttime))))
 	return redirect(url_for('reports'))
 
 

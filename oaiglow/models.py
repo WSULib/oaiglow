@@ -204,7 +204,7 @@ class Record(peewee.Model):
 		schematrons = Schematron.select()
 
 		for schematron in schematrons:
-			logging.info("validating on %s / %s" % (schematron.name, schematron.filename))
+			logging.debug("validating on %s / %s" % (schematron.name, schematron.filename))
 			sct_doc = etree.fromstring(schematron.xml.encode('utf-8'))
 			validator = isoschematron.Schematron(sct_doc, store_report=True)
 			# prepare metadata
@@ -223,7 +223,10 @@ class Record(peewee.Model):
 
 		# update schematron_validation_score
 		val_bools = [ test['result'] for test in self.validation_results ]
-		self.schematron_validation_score = sum(val_bools) / len(val_bools)
+		if len(val_bools) > 0 :
+			self.schematron_validation_score = sum(val_bools) / len(val_bools)
+		else:
+			self.schematron_validation_score = 0
 		logging.debug("updating schematron_validation_score to %s" % self.schematron_validation_score)
 		self.save()
 
