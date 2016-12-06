@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<!-- skeleton css -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='inc/Skeleton-2.0.4/css/skeleton.css')}}">
+		<link rel="stylesheet" href="{{ url_for('static',filename='inc/Skeleton-2.0.4/css/normalize.css')}}">
+
+		<!-- local css -->
+		<link rel="stylesheet" href="{{ url_for('static',filename='css/oaiglow.css')}}">	
+
+		<!-- jquery -->
+		<script src="{{ url_for('static',filename='js/jquery-3.1.1.min.js')}}"></script>	
+
+		<!-- datatables -->
+		<script src="{{ url_for('static',filename='inc/datatables/jquery.dataTables.min.js')}}"></script>
+		<link rel="stylesheet" href="{{ url_for('static',filename='inc/datatables/jquery.dataTables.min.css')}}">
+
+		<!-- long running job script -->
+		<script>
+			function longRunner(msg){
+				$("#job_status").fadeToggle();
+			}
+		</script>
+
+	</head>
+
+	<body>
+
+		<div class="container">
+
+			<div class="row">
+				<div class="twelve columns">
+					<ul class="main_nav">
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/" class="app_title"><span>oaiglow</span></a></li>
+						<li class="spacer_pipe">|</li>
+						<!-- <li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/about">about</a></li>
+						<li class="spacer_pipe">|</li> -->
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest">harvest</a></li>
+						<li class="spacer_pipe">|</li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view">view</a></li>
+						<li class="spacer_pipe">|</li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view/random">random record</a></li>
+						<li class="spacer_pipe">|</li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports">reports</a></li>
+						<li class="spacer_pipe">|</li>
+						<li><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config">config</a></li>
+					</ul>
+				</div>
+				
+			</div>
+			
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class="row">
+						<div id="app_msg" class="twelve columns">
+							{% for message in messages %}
+								<p>{{ message }}</p>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+			{% endwith %}
+
+			<div id="job_status" class="row">
+				<div class="twelve columns">
+					<p>Job Running...</p>
+				</div>
+			</div>
+
+	<hr>

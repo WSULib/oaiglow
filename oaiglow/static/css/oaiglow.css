@@ -1,0 +1,128 @@
+a {
+	color:gray;
+}
+
+a:hover {
+	color:black;
+}
+
+#app_msg {
+	padding:20px 20px 0px 20px;
+	background-color:rgba(0,255,0,.1);
+	border-radius:10px;
+}
+
+.app_title {
+	font-weight: bold;
+    background-color: rgba(255, 249, 58, 0.28);
+    padding: 10px;
+    border-radius: 20px;
+    color:black;
+    text-decoration: none;
+}
+.app_title:hover {
+	color:gray;
+}
+
+body {
+	line-height: 1;
+	margin-top:25px;
+}
+
+.text_centered {
+	text-align:center;
+}
+
+.container {
+	max-width:2048px;
+	width:90%;
+}
+
+.main_nav {
+	/*margin-bottom:0px;*/
+}
+
+.main_nav li {
+	display:inline;
+}
+
+.config_section {
+	padding:20px;
+	background-color:rgba(146, 146, 146, 0.15);
+	border-radius:10px;
+}
+
+.spacer_pipe {
+	margin-left:5px;
+	margin-right:5px;
+}
+
+table {
+
+}
+
+table td, th {
+	padding:10px 20px 10px 0px;
+	border-bottom:none;
+}
+
+table tr {
+	/*max-height:30px;*/
+}
+
+table tr ul {
+	margin-top:10px;
+	margin-bottom:0px;
+}
+
+.thumbnail {
+	text-align:center;
+}
+
+ul ul {
+	font-size: 100%;
+}
+
+.embed_table {
+	margin-bottom:0px;
+}
+
+.embed_table tr:nth-child(odd):not(:only-child) {
+	border-bottom: 1px solid #E1E1E1;
+}
+
+input.white_background{
+	background-color: white;
+}
+
+.orange_background {
+	background-color: #ffe8c5;
+}
+
+.white_background {
+	background-color: white;
+}
+
+#job_status {
+	display:none;
+	background-color:#ffdfdf;
+	border-radius:10px;
+	padding:20px 20px 0px 20px;
+	/*animation: blinker 1s linear infinite;*/
+}
+
+#job_status p {
+	/*padding: 10px;*/
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+
+
+
+
+
+
+
+

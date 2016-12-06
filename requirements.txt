@@ -1,0 +1,6 @@
+flask
+ipython
+peewee
+pymysql
+sickle
+twisted

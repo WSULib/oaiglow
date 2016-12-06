@@ -1,0 +1,64 @@
+{% include 'header.html' %}
+
+<div class="row">
+	<div class="twelve columns">
+		<h2>View</h2>
+	</div>
+</div>
+
+<div class="row">
+	<div class="twelve columns">
+		
+		<!-- insert table here -->
+		<table id="record_table" class="display" cellspacing="0" width="100%">
+            <thead></thead>  
+            <tbody></tbody>          
+        </table>
+
+	</div>
+</div>
+
+<!-- JS -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function(){
+	  var table = $('#record_table').DataTable({
+	    "processing": true,
+	    "serverSide": true,
+	    "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+	    "ajax": {
+	    	contentType: "application/json",
+    		type: "POST",
+    		url: "{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/view/all/datatables_json",    		
+		    data: function ( d ) {
+		      return JSON.stringify( d );
+		    }
+	    },
+		"columns": [
+	        { 
+	        	"name": "thumbnail_url",
+	        	"title": "Thumbnail",
+	        	"class": "text_centered",
+	        	"render": function (data, type, row, meta) {
+			        return '<a target="_blank" href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/'+row[3]+'"><img class="thumbnail" height={{localConfig.THUMBNAIL_HEIGHT}} src="' + data + '"/></a>';
+			    }
+	    	},
+	        { "name": "title", "title": "Title" },
+	        { "name": "abstract", "title": "Abstract" },
+	        { "name": "identifier", "title": "OAI Identifier" },
+	        { "name": "schematron_validation_score", "title": "Validation Score" },	        
+	    	{ 
+	        	"name": "actions",
+	        	"title": "Actions",
+	        	"class": "text_centered",
+	        	"render": function (data, type, row, meta) {
+			        return '<a target="_blank" href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/record/'+row[3]+'" class="button">Record View</a>';
+			    }
+	    	}
+	    ],
+	    "pageLength": 5
+	  });  
+	});
+</script>
+
+{% include 'footer.html' %}
+

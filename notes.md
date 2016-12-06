@@ -1,0 +1,5 @@
+<blockquote>Technically, OAI-PMH would now be referred to as RESTless or unRESTful. Conceptually, we have come to see it as repository-centric instead of resource-centric or web-centric. It has its starting point in the repository, which is considered to be the center of the universe. Interoperability is framed in terms of the repository, rather than in terms of the web and its primitives. It is a perspective in which a repository resembles a brick and mortar library, a library that one can go visit and that allows such visits subject to policies — the protocol — that may simultaneously be well intended and idiosyncratic. This kind of repository, although it resides on the web, hinders seamless access to its content because it does not fully embrace the ways of the web.</blockquote>
+
+<blockquote>Compound objects are no longer considered from the perspective of repositories but rather from the web. When looking from the web at a repository, one actually does not see a repository. Rather, one sees web resources that happen to be exposed by the repository.</blockquote>
+
+- [citation](http://www.dlib.org/dlib/november15/vandesompel/11vandesompel.html)

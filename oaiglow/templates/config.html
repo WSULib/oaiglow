@@ -1,0 +1,52 @@
+{% include 'header.html' %}
+
+<div class="row">
+	<div class="twelve columns">
+		<h2>Configuration</h2>
+	</div>
+</div>
+
+<div class="row">
+	<div class="six columns config_section">
+		<h4>Schematron Validation</h4>
+		{% if schematrons|length > 0 %}
+			<h5>Current Schematron Validations</h5>
+			<table class="table">
+				<tr>
+					<th>Name</th>
+					<th>Filename</th>
+					<th>Actions</th>
+				</tr>
+					{% for schematron in schematrons %}
+						<tr>
+							<td>{{schematron.name}}</td>
+							<td>{{schematron.filename}}</td>
+							<td><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/view/{{schematron.id}}">View</a><span class="spacer_pipe">|</span><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/delete/{{schematron.id}}">Delete</a></td>
+						</tr>
+					{% endfor %}
+			</table>
+		{% endif %}		
+		<h5>Add Schematron Validation</h5>
+		<form class="form" method="POST" action="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/config/schematron/add" enctype="multipart/form-data">
+			<div class="row">
+			    <div class="twelve columns">
+			        <label for="exampleEmailInput">Schematron, human readable name</label>
+			        <input class="u-full-width" type="text" name="schematron_name" placeholder="DPLA minimum" id="schematron_name">
+			        <br><br>
+			        <label for="exampleEmailInput">Upload schematron XML</label>
+			        <input id="upload" name="upload" type="file">
+			        <br><br>
+			        <input class="white_background" type="submit">
+			    </div>
+		    </div>
+		</form>
+	</div>
+
+	<div class="six columns config_section">
+		<h4>Database</h4>
+		<p><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/harvest/purge"><button class="btn white_background">Drop and Recreate Tables</button></a></p>
+	</div>
+</div>
+
+{% include 'footer.html' %}
+

@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# oaiglow
+localConfig.py
+*.db
+.DS*
+./**/.DS*
