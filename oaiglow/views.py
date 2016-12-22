@@ -126,8 +126,11 @@ def harvest_all():
 	for record in records:
 		# check if record already exists
 		if not Record.select().where(Record.identifier == record.header.identifier).exists():
-			og_record = Record.create(record)
-			og_record.save()
+			try:
+				og_record = Record.create(record)
+				og_record.save()
+			except:
+				logging.warning('error with %s' % record.header.identifier)
 		else:
 			logging.info("skipping record, already exists...")
 	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
@@ -370,16 +373,28 @@ def sr(identifier):
 @oaiglow_app.route("/record/<identifier>/update", methods=['POST', 'GET'])
 def sr_update(identifier):
 
+	'''
+	update from OAI, and (re)run validations
+	'''
+
 	# retrieve single record from database
 	record = Record.get(identifier)
 
 	if record:
+
+		logging.info("updating record...")
 
 		# update record from OAI-PMH server
 		record.update_from_server()	
 
 		# trigger validation
 		record.validate_schematrons()
+
+		# run link_checks
+		record.link_check()
+
+		# commit changes
+		db.commit()
 
 		return render_template("record_single.html",localConfig=localConfig, record=record, app_msg="Record updated!")
 

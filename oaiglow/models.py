@@ -136,8 +136,11 @@ class Record(peewee.Model):
 		#metadata
 		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata').getchildren()[0]
 		metadata_as_string = etree.tostring(metadata)
-		title = sickle_record.metadata['title'][0]
-		abstract = sickle_record.metadata['abstract'][0]
+		title = sickle_record.metadata['title'][0]		
+		if 'abstract' in sickle_record.metadata:
+			abstract = sickle_record.metadata['abstract'][0]
+		else:
+			abstract = False
 
 		# validations
 		schematron_validation_score = 0.0
