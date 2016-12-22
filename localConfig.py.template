@@ -3,6 +3,8 @@
 import logging
 logging.basicConfig(level=logging.INFO)
 
+import re
+
 # oaiglow app
 OAIGLOW_APP_PORT = 4800
 OAIGLOW_APP_PREFIX = '/oaiglow' # include leading slash
@@ -30,3 +32,14 @@ DB_MYSQL_DATABASE = 'oaiglow'
 
 # UI
 THUMBNAIL_HEIGHT = 72
+
+# Link Checking
+# mimetypes should be lowercase
+ACCEPTED_THUMBNAIL_MIMETYPES = [
+	'image/jpeg',
+	'image/gif',
+	'image/png',
+	'image/webp'	
+]
+
+PRIMARY_URL_TARGET_REGEX = re.compile(r'<span itemprop="name">[0-9a-zA-Z].+?</span>')

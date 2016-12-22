@@ -128,6 +128,11 @@ class PeeweeDT(object):
 		logging.debug('iterate through rows...')
 		for row in self.query_slice:
 
+			'''
+			This would be an option for filters, like the ones provided through dataTables-SQL library leveraged here:
+			https://github.com/WSULib/ouroboros/blob/v2/WSUDOR_Manager/actions/ingestWorkspace/__init__.py#L255-L281
+			'''
+
 			# iterate through columns and place in list
 			row_data = [ getattr(row, column)  for column in self.columns  ]
 

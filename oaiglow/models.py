@@ -14,6 +14,8 @@ from oaiglow import db, logging
 
 # generic
 from lxml import etree, isoschematron
+import re
+import requests
 
 
 # OAI-PMH server
@@ -91,11 +93,8 @@ class Record(peewee.Model):
 
 	# validations
 	schematron_validation_score = peewee.FloatField()
-
-	# about
-	'''
-	Skipping about section from REPOX for now, looks to be showing provenance of original record?
-	'''
+	thumbnail_url_check = peewee.BooleanField(default=False)
+	primary_url_check = peewee.BooleanField(default=False)
 
 	# not stored in DB
 	# xml etree element
@@ -142,6 +141,8 @@ class Record(peewee.Model):
 
 		# validations
 		schematron_validation_score = 0.0
+		thumbnail_url_check = False
+		primary_url_check = False
 		
 		# extract URLs
 		#####################################################################################################################
@@ -167,7 +168,9 @@ class Record(peewee.Model):
 			thumbnail_url=thumbnail_url,
 			metadata=metadata,
 			sickle=sickle_record,
-			schematron_validation_score=schematron_validation_score
+			schematron_validation_score=schematron_validation_score,
+			thumbnail_url_check=thumbnail_url_check,
+			primary_url_check=primary_url_check
 		)
 
 
@@ -189,7 +192,7 @@ class Record(peewee.Model):
 		self.save()
 
 
-	def validate_schematrons(self):
+	def validate_schematrons(self, update=True):
 
 		'''
 		Validate schematrons
@@ -228,9 +231,64 @@ class Record(peewee.Model):
 		else:
 			self.schematron_validation_score = 0
 		logging.debug("updating schematron_validation_score to %s" % self.schematron_validation_score)
-		self.save()
+		if update:
+			logging.debug("updating record")
+			self.save()
 
 		return validation_results
+
+
+	def link_check(self, update=True):
+
+		'''
+		Checks thumbnail and live URL links, returns JSON response
+		Checking
+			- r.thumbnail_url
+			- r.primary_url
+		'''
+
+		# init response dictionary
+		check_dict = {}
+
+		# check thumbnail
+		thumb_r = requests.get(self.thumbnail_url)
+		if thumb_r.status_code == 200:
+			self.thumbnail_url_check = thumb_r.headers['Content-Type'].lower() in localConfig.ACCEPTED_THUMBNAIL_MIMETYPES
+		else:
+			self.thumbnail_url_check = False
+
+		# check primary url
+		'''
+		Looking for two things:
+			- 200 status code
+			- searches response HTML for localConfig.PRIMARY_URL_TARGET_TEXT
+		'''
+		primary_r = requests.get(self.primary_url)
+		if primary_r.status_code == 200:
+			finds = re.findall(localConfig.PRIMARY_URL_TARGET_REGEX, primary_r.text)
+			logging.debug(finds)
+			if len(finds) > 0:
+				logging.debug("We should be true!")
+				self.primary_url_check = True
+			else:
+				self.primary_url_check = False	
+		elif primary_r.status_code == 404:
+			self.primary_url_check = False
+		else:
+			self.primary_url_check = False
+
+		# update record row
+		if update:
+			logging.debug("updating record")
+			logging.debug(self.thumbnail_url_check)
+			logging.debug(self.primary_url_check)
+			logging.debug(self.save())
+
+		# return results
+		return {
+			'thumbnail_url_check': self.thumbnail_url_check,
+			'primary_url_check': self.primary_url_check
+		}
 			
 
 class Schematron(peewee.Model):

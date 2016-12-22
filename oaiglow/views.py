@@ -218,7 +218,7 @@ def reports():
 	return render_template("reports.html", localConfig=localConfig)
 
 
-# view home
+# schematron validations
 @oaiglow_app.route("/reports/validate_schematrons", methods=['POST', 'GET'])
 def schematron_report():
 
@@ -243,6 +243,33 @@ def schematron_report():
 
 	ttime = float(time.time()) - stime
 	flash('Scheamtrons have been run. %.3f seconds elapsed for %s total records, %.3f records/per second' % ((ttime,count,float(count/ttime))))
+	return redirect(url_for('reports'))
+
+
+# schematron validations
+@oaiglow_app.route("/reports/link_check", methods=['POST', 'GET'])
+def link_check():
+
+	'''
+	For record in records:
+		run record.link_check()
+	Return report
+	'''
+
+	logging.info("checking links for all records...")
+	stime = time.time()
+	count = Record.select().count()
+	records = Record.select().iterator()
+	with db.atomic(): # turning off atomic updates, memory leak?
+		for index, record in enumerate(records):
+			srtime = time.time()
+			record.link_check()
+			ertime = time.time()
+			logging.info("url checked %s/%s, elapsed %s" % (index+1,count,(ertime - srtime)))
+	db.commit()
+
+	ttime = float(time.time()) - stime
+	flash('Links have been checked. %.3f seconds elapsed for %s total records, %.3f records/per second' % ((ttime,count,float(count/ttime))))
 	return redirect(url_for('reports'))
 
 
@@ -306,7 +333,9 @@ def datatables_json():
 		'title',
 		'abstract',
 		'identifier',
-		'schematron_validation_score'
+		'schematron_validation_score',
+		'thumbnail_url_check',
+		'primary_url_check'
 	]	
 
 	# instantiating a DataTable for the query and table needed

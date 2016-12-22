@@ -21,6 +21,7 @@
 <!-- JS -->
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function(){
+
 	  var table = $('#record_table').DataTable({
 	    "processing": true,
 	    "serverSide": true,
@@ -45,7 +46,9 @@
 	        { "name": "title", "title": "Title" },
 	        { "name": "abstract", "title": "Abstract" },
 	        { "name": "identifier", "title": "OAI Identifier" },
-	        { "name": "schematron_validation_score", "title": "Validation Score" },	        
+	        { "name": "schematron_validation_score", "title": "Validation Score" },
+	        { "name": "thumbnail_url_check", "title": "Thumbnail URL check",},
+	        { "name": "primary_url_check", "title": "Live URL check" },
 	    	{ 
 	        	"name": "actions",
 	        	"title": "Actions",

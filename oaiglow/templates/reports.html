@@ -18,6 +18,13 @@
 					<li>Let's say you have uploaded 4 schematron validations.  If a record passes three of those schamtron validations without any errors, but fails one, it would get a <code>validation score</code> of <code>0.75</code>.  If they pass all tests, it would get a score of <code>1</code>.  This column can be used to sort the table and find records, grouping records that are failing the most tests.  You can then click into a single record from the table and view precisely which schematron validations are failing and get a report from the validation.</li>
 				</ul>
 			</li>
+			<li>
+				<a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/link_check" onclick="longRunner();"><button class="btn white_background">Link Check Records</button></a>
+				<a href="#" onclick="$('#link_checker_info').slideToggle(); return false;"><button class="btn orange_background">?</button></a>
+				<ul id="link_checker_info" style="display:none;">
+					<li>This will check thumbnail URLs and live record URLs, and return a report for all items.</li>
+				</ul>
+			</li>
 		</ul>		
 	</div>
 </div>

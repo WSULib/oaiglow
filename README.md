@@ -13,30 +13,41 @@ General approach is:
 
 ## Installation
 * Install dev tools for python3:
-<pre><code>sudo apt-get install python3-dev</code></pre> 
+
+```
+sudo apt-get install python3-dev
+```
+
 * Create python3, virtual environment:
-<pre><code>mkvirtualenv --python=/usr/bin/python3 oaiglow
-\# depending on how you manage virtual environments, confirm using 'oaiglow' virtualenv</pre></code>
+
+```
+mkvirtualenv --python=/usr/bin/python3 oaiglow
+\# depending on how you manage virtual environments, confirm using 'oaiglow' virtualenv
+```
 
 * Install requirements:
-<pre><code>pip3 install -r requirements.txt</code></pre>
+```
+pip3 install -r requirements.txt
+```
 
 * Create `localConfig.py` from `localConfig.py.template` and configure
 
 * If running behind reverse-proxy (recommended for URL patterns), add something similar to Apahce config:
 
-<pre><code># Oaiglow
+```
+# Oaiglow
 ProxyPass /oaiglow http://localhost:4800/
 ProxyPassReverse /oaiglow http://localhost:4800/
 
-&lt;Location /oaiglow&gt;
+<Location /oaiglow>
     Order allow,deny
     Allow from all
     RequestHeader set X-SCRIPT-NAME /oaiglow
     RequestHeader set X-SCHEME http
     ExpiresActive On
     ExpiresDefault "now"        
-&lt;/Location&gt;</code></pre>
+</Location>
+```
 
 ## Run
 `./runserver.sh`
@@ -46,12 +57,16 @@ ProxyPassReverse /oaiglow http://localhost:4800/
 Often, the console is a handy place for maintenence and debugging.  Here are some inroads for working with the API and database.
 
 Start console with some preliminary loading:
-<pre><code>./console.sh</code></pre>
+```
+./console.sh
+```
 
 Grab harvested record from DB:
-<pre><code>record = Record.get('[LONG OAI IDENTIFIER]')</code></pre>
+```
+r = Record.get('[LONG OAI IDENTIFIER]')
+```
 
-More to come...
+
 
 
 
