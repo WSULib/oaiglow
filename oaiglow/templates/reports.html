@@ -8,8 +8,8 @@
 
 <div class="row">
 	<div class="twelve columns">
-		<h3>Run Reports</h3>
-		<p>By running the following reports, you will be updating columns in the record database.  You can view the results in the record table, or export them to files below.</p>
+		<h3>Run</h3>
+		<p>The following tests and checks run over <strong>all</strong> currently harvested records, and records this result in the database.  These results can be viewed in the record preview table, or downloaded as as stand-alone report below.</p>
 		<ul>
 			<li>
 				<a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/validate_schematrons" onclick="longRunner();"><button class="btn white_background">Run schematron validations on all records</button></a>
@@ -33,7 +33,7 @@
 
 <div class="row">
 	<div class="twelve columns">
-		<h3>Export Report</h3>
+		<h3>Export</h3>
 		<form class="form" method="POST" action="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/export">
 			<div class="row">
 			    <div class="three columns">
@@ -46,7 +46,6 @@
 		</form>
 	</div>
 	<div class="twelve columns">
-		<h3>Previously Generated Reports</h3>
 		<table class="table">
 			<tr>
 				<th>Report Name</th>
