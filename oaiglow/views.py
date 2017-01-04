@@ -1,11 +1,11 @@
 # views for oaiglow
 
 # flask proper
-from flask import render_template, request, session, redirect, make_response, Response, jsonify, flash, url_for
+from flask import render_template, request, session, redirect, make_response, Response, jsonify, flash, url_for, send_from_directory
 
 # oaiglow flask app
 from oaiglow import db, logging, oaiglow_app, server
-from oaiglow.models import Identifier, Record, Schematron
+from oaiglow.models import Identifier, Record, Schematron, Report
 
 # peeweeDT
 from oaiglow.peeweeDT import PeeweeDT
@@ -16,6 +16,7 @@ import localConfig
 # generic
 from lxml import etree
 import json
+import os
 import random
 import time
 import urllib
@@ -218,7 +219,11 @@ def about():
 @oaiglow_app.route("/reports", methods=['POST', 'GET'])
 def reports():
 
-	return render_template("reports.html", localConfig=localConfig)
+	# check for previously generated reports
+	reports = os.listdir('io/export')
+	reports = [ report for report in reports if report not in ['placeholder','.DS_Store', '.gitignore'] ]
+
+	return render_template("reports.html", reports=reports, localConfig=localConfig)
 
 
 # schematron validations
@@ -273,6 +278,35 @@ def link_check():
 
 	ttime = float(time.time()) - stime
 	flash('Links have been checked. %.3f seconds elapsed for %s total records, %.3f records/per second' % ((ttime,count,float(count/ttime))))
+	return redirect(url_for('reports'))
+
+
+# schematron validations
+@oaiglow_app.route("/reports/export", methods=['POST'])
+def report_export():
+
+	report_name = request.form['report_name']
+
+	r = Report()
+	result = r.export(report_name)
+	
+	flash('Report %s.csv was generated.  Download below.' % (report_name))
+	return redirect(url_for('reports'))
+
+
+# schematron validations
+@oaiglow_app.route("/reports/download/<report_name>", methods=['GET'])
+def report_download(report_name):
+
+	return send_from_directory(directory='../io/export', filename="%s" % report_name, as_attachment=True)
+
+
+# schematron validations
+@oaiglow_app.route("/reports/delete/<report_name>", methods=['GET'])
+def report_delete(report_name):
+
+	os.remove('io/export/%s' % report_name)
+	flash('Report %s was deleted.' % (report_name))
 	return redirect(url_for('reports'))
 
 

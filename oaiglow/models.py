@@ -13,6 +13,7 @@ from sickle import Sickle
 from oaiglow import db, logging
 
 # generic
+import csv
 from lxml import etree, isoschematron
 import re
 import requests
@@ -317,6 +318,34 @@ class Schematron(peewee.Model):
 		)
 
 
+class Report(object):
+
+	'''
+	class that embodies a report for export
+	raw=raw,
+			identifier=identifier,
+			datestamp=datestamp,
+			setSpec=setSpec,
+			metadata_as_string=metadata_as_string,
+			title=title,
+			abstract=abstract,
+			primary_url=primary_url,
+			thumbnail_url=thumbnail_url,
+			metadata=metadata,
+			sickle=sickle_record,
+			schematron_validation_score=schematron_validation_score,
+			thumbnail_url_check=thumbnail_url_check,
+			primary_url_check=primary_url_check
+	'''
+
+	def export(self, report_name):
+
+		result = db.execute_sql('select identifier, datestamp, setSpec, title, abstract, primary_url, thumbnail_url, schematron_validation_score, thumbnail_url_check, primary_url_check from record')
+		with open('io/export/%s.csv' % report_name,'w') as csv_file:
+			csv_writer = csv.writer(csv_file)
+			csv_writer.writerow([i[0] for i in result.description])
+			csv_writer.writerows(result)
+		return 'io/export/%s.csv' % report_name
 
 
 

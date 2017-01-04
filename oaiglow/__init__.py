@@ -46,7 +46,7 @@ class ReverseProxied(object):
 		return self.app(environ, start_response)
 
 # create app
-oaiglow_app = Flask(__name__)
+oaiglow_app = Flask(__name__, static_url_path='')
 oaiglow_app.secret_key = 'oaiglow'
 # if using app prefix, wrap Flask app in ReverseProxied class from above
 if localConfig.OAIGLOW_APP_PREFIX_USE:

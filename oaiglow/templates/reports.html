@@ -8,6 +8,8 @@
 
 <div class="row">
 	<div class="twelve columns">
+		<h3>Run Reports</h3>
+		<p>By running the following reports, you will be updating columns in the record database.  You can view the results in the record table, or export them to files below.</p>
 		<ul>
 			<li>
 				<a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/validate_schematrons" onclick="longRunner();"><button class="btn white_background">Run schematron validations on all records</button></a>
@@ -26,6 +28,37 @@
 				</ul>
 			</li>
 		</ul>		
+	</div>
+</div>
+
+<div class="row">
+	<div class="twelve columns">
+		<h3>Export Report</h3>
+		<form class="form" method="POST" action="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/export">
+			<div class="row">
+			    <div class="three columns">
+			        <label for="report_name">Report Name (avoid spaces or strange characters)</label>
+			        <input class="u-full-width" type="text" name="report_name" placeholder="export_1_7_2017" id="report_name">
+			        <br><br>
+			        <input class="white_background" type="submit">
+			    </div>
+		    </div>
+		</form>
+	</div>
+	<div class="twelve columns">
+		<h3>Previously Generated Reports</h3>
+		<table class="table">
+			<tr>
+				<th>Report Name</th>
+				<th>Actions</th>
+			<tr>
+			{% for report in reports %}
+				<tr>
+					<td>{{report}}</td>
+					<td><a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/download/{{report}}">Download</a> / <a href="{% if localConfig.OAIGLOW_APP_PREFIX_USE %}{{localConfig.OAIGLOW_APP_PREFIX}}{% endif %}/reports/delete/{{report}}">Delete</a></td>
+				</tr>
+			{% endfor %}
+		</table>
 	</div>
 </div>
 
