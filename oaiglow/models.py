@@ -89,8 +89,8 @@ class Record(peewee.Model):
 	metadata_as_string = peewee.TextField()
 	title = peewee.TextField()
 	abstract = peewee.TextField()
-	primary_url = peewee.CharField()
-	thumbnail_url = peewee.CharField()
+	primary_url = peewee.CharField(null=True)
+	thumbnail_url = peewee.CharField(null=True)
 
 	# validations
 	schematron_validation_score = peewee.FloatField()
