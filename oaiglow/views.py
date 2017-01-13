@@ -121,6 +121,7 @@ def harvest_all():
 	# retrieve records to harvest and store in DB
 	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX, set=localConfig.OAI_SET)
 	total_count = records.resumption_token.complete_list_size
+	harvest_count = 0
 
 	# consider atomic updates?
 	stime = time.time()
@@ -130,13 +131,16 @@ def harvest_all():
 			try:
 				og_record = Record.create(record)
 				og_record.save()
-			except:
+				harvest_count += 1
+			except Exception as e:
 				logging.warning('error with %s' % record.header.identifier)
+				logging.exception(e)
 		else:
 			logging.info("skipping record, already exists...")
-	logging.info("total records, total time: %s, %s seconds" % (total_count, (float(time.time()) - stime)))
 
-	flash('Records harvested: %s, in %s seconds' % (total_count, (float(time.time()) - stime)))
+	# report and return
+	logging.info("total records, total time: %s, %s seconds" % (harvest_count, (float(time.time()) - stime)))
+	flash('Records harvested: %s, in %s seconds' % (harvest_count, (float(time.time()) - stime)))
 	return redirect(url_for('harvest'))
 
 
@@ -372,7 +376,8 @@ def datatables_json():
 		'identifier',
 		'schematron_validation_score',
 		'thumbnail_url_check',
-		'primary_url_check'
+		'primary_url_check',
+		'raw'
 	]	
 
 	# instantiating a DataTable for the query and table needed

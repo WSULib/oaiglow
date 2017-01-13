@@ -93,3 +93,4 @@ localConfig.py
 *.db
 .DS*
 ./**/.DS*
+nohup.out

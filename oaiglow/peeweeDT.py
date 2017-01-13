@@ -72,7 +72,8 @@ class PeeweeDT(object):
 			self.query = self.query.where(
 				(self.peewee_model.title.contains(search_string)) |
 				(self.peewee_model.abstract.contains(search_string)) |
-				(self.peewee_model.identifier.contains(search_string))
+				(self.peewee_model.identifier.contains(search_string)) |
+				(self.peewee_model.raw.contains(search_string))
 			)
 
 
