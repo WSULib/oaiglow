@@ -137,7 +137,10 @@ class Record(peewee.Model):
 		#metadata
 		metadata = sickle_record.xml.find('{http://www.openarchives.org/OAI/2.0/}metadata').getchildren()[0]
 		metadata_as_string = etree.tostring(metadata)
-		title = sickle_record.metadata['title'][0]		
+		if 'title' in sickle_record.metadata:
+			title = sickle_record.metadata['title'][0]		
+		else:
+			title = False
 		if 'abstract' in sickle_record.metadata:
 			abstract = sickle_record.metadata['abstract'][0]
 		else:
@@ -155,8 +158,16 @@ class Record(peewee.Model):
 		# thumbnail_url = metadata.xpath('//mods:url[@access="preview"]', namespaces={'mods':'http://www.loc.gov/mods/v3'})[0].text
 		
 		# findall
-		primary_url = metadata.find('{http://www.loc.gov/mods/v3}location/{http://www.loc.gov/mods/v3}url[@usage="primary"]').text
-		thumbnail_url = metadata.find('{http://www.loc.gov/mods/v3}location/{http://www.loc.gov/mods/v3}url[@access="preview"]').text
+		try:
+			primary_url = metadata.find('{http://www.loc.gov/mods/v3}location/{http://www.loc.gov/mods/v3}url[@usage="primary"]').text
+		except:
+			logging.warning('could not get primary_url')
+			primary_url = False
+		try:
+			thumbnail_url = metadata.find('{http://www.loc.gov/mods/v3}location/{http://www.loc.gov/mods/v3}url[@access="preview"]').text
+		except:
+			logging.warning('could not get thumbnail_url')
+			thumbnail_url = False
 		#####################################################################################################################
 
 		# return Record Instance
