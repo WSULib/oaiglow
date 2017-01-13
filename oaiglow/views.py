@@ -30,8 +30,13 @@ import urllib
 def index():
 
 	# get target state
-	records = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
-	total_count = records.resumption_token.complete_list_size
+	try:
+		records_query = server.sickle.ListRecords(metadataPrefix=localConfig.OAI_METADATA_PREFIX)
+		total_count = records_query.resumption_token.complete_list_size
+	except:
+		logging.warning("could not get list of records from target server")
+		total_count = "Error"
+
 
 	# get records state
 	records = Record.select()
