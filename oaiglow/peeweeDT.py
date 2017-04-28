@@ -5,6 +5,7 @@
 ##################################################################
 
 import json
+import time
 
 from logging import getLogger
 logging = getLogger('peeweeDT')
@@ -34,6 +35,7 @@ class PeeweeDT(object):
 		- return json
 	'''
 
+
 	def __init__(self, columns, peewee_model, DTinput):
 
 		logging.debug(DTinput)
@@ -56,6 +58,9 @@ class PeeweeDT(object):
 		self.DToutput = DT().__dict__
 		self.DToutput['draw'] = DTinput['draw']
 
+		# filtered flag
+		self.filtered = False
+
 		# query and build response
 		self.build_response()
 
@@ -69,6 +74,7 @@ class PeeweeDT(object):
 
 		search_string = self.DTinput['search']['value']
 		if search_string != '':
+			self.filtered = True
 			self.query = self.query.where(
 				(self.peewee_model.title.contains(search_string)) |
 				(self.peewee_model.abstract.contains(search_string)) |
@@ -106,7 +112,7 @@ class PeeweeDT(object):
 
 
 	def build_response(self):
-
+		stime = time.time()
 		logging.debug('building query...')
 
 		# begin query
@@ -121,13 +127,14 @@ class PeeweeDT(object):
 		self.paginate()
 
 		# build DToutput
-		self.DToutput['recordsFiltered'] = self.query.count()
-
-		logging.debug(self.DToutput)
+		if self.filtered:
+			self.DToutput['recordsFiltered'] = self.query.count()
+		else: 
+			self.DToutput['recordsFiltered'] = self.DToutput['recordsTotal']
 
 		# iterate through rows
-		logging.debug('iterate through rows...')
-		for row in self.query_slice:
+		logging.debug('iterate through rows and build DT response')
+		for i, row in enumerate(self.query_slice):
 
 			'''
 			This would be an option for filters, like the ones provided through dataTables-SQL library leveraged here:
@@ -135,10 +142,12 @@ class PeeweeDT(object):
 			'''
 
 			# iterate through columns and place in list
-			row_data = [ getattr(row, column)  for column in self.columns  ]
+			row_data = [ getattr(row, column)  for column in self.columns ]
 
 			# add list to object
 			self.DToutput['data'].append(row_data)
+
+		logging.debug('build DT response: %s' % (float(time.time()) - stime))
 
 
 	def to_json(self):
