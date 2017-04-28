@@ -128,20 +128,37 @@ def harvest_all():
 	total_count = records.resumption_token.complete_list_size
 	harvest_count = 0
 
-	# consider atomic updates?
 	stime = time.time()
-	for record in records:
-		# check if record already exists
-		if not Record.select().where(Record.identifier == record.header.identifier).exists():
-			try:
-				og_record = Record.create(record)
-				og_record.save()
-				harvest_count += 1
-			except Exception as e:
-				logging.warning('error with %s' % record.header.identifier)
-				logging.exception(e)
-		else:
-			logging.info("skipping record, already exists...")
+
+	'''
+	Old approach: chokes around 19k
+	'''
+	# for record in records:
+	# 	# check if record already exists
+	# 	if not Record.select().where(Record.identifier == record.header.identifier).exists():
+	# 		try:
+	# 			og_record = Record.create(record)
+	# 			og_record.save()
+	# 			harvest_count += 1
+	# 		except Exception as e:
+	# 			logging.warning('error with %s' % record.header.identifier)
+	# 			logging.exception(e)
+	# 	else:
+	# 		logging.info("skipping record, already exists...")
+
+	'''
+	New approach: requires dropping tables from config, complete reharvest
+	'''
+	for i,record in enumerate(records):
+		rtime = time.time()
+		try:
+			og_record = Record.create(record)
+			og_record.save()
+			harvest_count += 1
+		except Exception as e:
+			logging.warning('error with %s' % record.header.identifier)
+			logging.exception(e)
+		logging.info("record DB insert %s/?: %s seconds" % (i,float(time.time() - rtime)) )
 
 	# report and return
 	logging.info("total records, total time: %s, %s seconds" % (harvest_count, (float(time.time()) - stime)))
